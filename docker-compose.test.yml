@@ -1,0 +1,25 @@
+# Postgres dùng riêng cho integration tests.
+# Port 5433 (khác 5432 mặc định) để không xung đột với dev DB.
+#
+# Usage:
+#   docker compose -f docker-compose.test.yml up -d
+#   docker compose -f docker-compose.test.yml down -v   # -v để xoá volume
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: lumina-test-db
+    restart: "no"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: lumina_test
+    ports:
+      - "5433:5432"
+    # tmpfs → data trong RAM, mỗi lần down -v là sạch (nhanh hơn volume)
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d lumina_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 10

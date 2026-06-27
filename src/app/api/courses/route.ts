@@ -15,8 +15,15 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get('category');
   const q = searchParams.get('q');
-  const limit = Number(searchParams.get('limit') ?? 20);
-  const offset = Number(searchParams.get('offset') ?? 0);
+  // Parse pagination an toàn: tham số phi số (vd ?limit=abc) → fallback mặc định,
+  // tránh slice(offset, NaN) trả về mảng rỗng. Kẹp trong khoảng hợp lệ.
+  const parseIntParam = (raw: string | null, fallback: number, min: number, max: number) => {
+    const n = Number.parseInt(raw ?? '', 10);
+    if (!Number.isFinite(n)) return fallback;
+    return Math.min(Math.max(n, min), max);
+  };
+  const limit = parseIntParam(searchParams.get('limit'), 20, 1, 100);
+  const offset = parseIntParam(searchParams.get('offset'), 0, 0, Number.MAX_SAFE_INTEGER);
 
   let courses = MOCK_COURSES;
 

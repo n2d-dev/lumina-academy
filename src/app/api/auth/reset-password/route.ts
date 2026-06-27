@@ -62,14 +62,17 @@ export async function POST(request: Request) {
     await prisma.$transaction([
       prisma.user.update({
         where: { id: resetToken.userId },
-        data: { password: hashedPassword },
+        // passwordChangedAt mốc thời gian đổi mật khẩu — JWT callback (lib/auth.ts)
+        // dùng nó để vô hiệu hóa mọi token phát hành TRƯỚC thời điểm này.
+        // (App dùng JWT strategy, KHÔNG có Session table → không thể chỉ xóa session.)
+        data: { password: hashedPassword, passwordChangedAt: new Date() },
       }),
       // Mark token used
       prisma.passwordResetToken.update({
         where: { id: resetToken.id },
         data: { usedAt: new Date() },
       }),
-      // Invalidate tất cả session để buộc đăng nhập lại với password mới
+      // Best-effort: xóa DB session nếu sau này bật adapter (no-op với JWT thuần)
       prisma.session.deleteMany({
         where: { userId: resetToken.userId },
       }),

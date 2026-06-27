@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireInstructor } from '@/lib/auth-helpers';
+import { requireApiInstructor , authErrorResponse } from '@/lib/auth-helpers';
 import {
   createQuestionSchema,
   reorderQuestionsSchema,
@@ -31,7 +31,7 @@ async function verifyQuizOwner(quizId: string, userId: string, role: string) {
  */
 export async function POST(request: Request, { params }: Params) {
   try {
-    const user = await requireInstructor();
+    const user = await requireApiInstructor();
     const body = await request.json();
     const data = createQuestionSchema.parse({ ...body, quizId: params.quizId });
 
@@ -67,7 +67,7 @@ export async function POST(request: Request, { params }: Params) {
  */
 export async function PATCH(request: Request, { params }: Params) {
   try {
-    const user = await requireInstructor();
+    const user = await requireApiInstructor();
     const body = await request.json();
     const data = reorderQuestionsSchema.parse({
       ...body,
@@ -76,10 +76,12 @@ export async function PATCH(request: Request, { params }: Params) {
 
     await verifyQuizOwner(params.quizId, user.id, user.role);
 
+    // updateMany + ràng buộc quizId → chỉ cập nhật question THUỘC quiz này,
+    // chống IDOR (ID lạ bị bỏ qua thay vì ghi đè question của quiz khác).
     await prisma.$transaction(
       data.questionIds.map((id, index) =>
-        prisma.question.update({
-          where: { id },
+        prisma.question.updateMany({
+          where: { id, quizId: params.quizId },
           data: { order: index + 1 },
         })
       )
@@ -92,6 +94,8 @@ export async function PATCH(request: Request, { params }: Params) {
 }
 
 function handleError(err: any) {
+  const authRes = authErrorResponse(err);
+  if (authRes) return authRes;
   if (err instanceof z.ZodError) {
     return NextResponse.json(
       { message: err.errors[0].message, errors: err.errors },

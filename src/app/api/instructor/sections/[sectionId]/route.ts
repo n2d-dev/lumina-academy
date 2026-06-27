@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireInstructor } from '@/lib/auth-helpers';
+import { requireApiInstructor , authErrorResponse } from '@/lib/auth-helpers';
 import { updateSectionSchema } from '@/lib/validations/course';
 
 interface Params {
@@ -9,7 +9,7 @@ interface Params {
 }
 
 async function verifySectionOwner(sectionId: string) {
-  const user = await requireInstructor();
+  const user = await requireApiInstructor();
   const section = await prisma.section.findUnique({
     where: { id: sectionId },
     include: { course: { select: { instructorId: true } } },
@@ -48,6 +48,8 @@ export async function DELETE(_: Request, { params }: Params) {
 }
 
 function handleError(err: any) {
+  const authRes = authErrorResponse(err);
+  if (authRes) return authRes;
   if (err instanceof z.ZodError) {
     return NextResponse.json({ message: err.errors[0].message }, { status: 400 });
   }

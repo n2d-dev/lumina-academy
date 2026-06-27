@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireUser } from '@/lib/auth-helpers';
+import { requireApiUser , authErrorResponse } from '@/lib/auth-helpers';
 import { generatePlaybackToken, generateThumbnailToken } from '@/lib/mux';
 
 const playbackSchema = z.object({
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     let allowed = lesson.isPreview;
 
     if (!allowed) {
-      const user = await requireUser().catch(() => null);
+      const user = await requireApiUser().catch(() => null);
 
       if (!user) {
         return NextResponse.json(
@@ -89,6 +89,8 @@ export async function POST(request: Request) {
       thumbnailToken,
     });
   } catch (err: any) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     if (err instanceof z.ZodError) {
       return NextResponse.json({ message: err.errors[0].message }, { status: 400 });
     }

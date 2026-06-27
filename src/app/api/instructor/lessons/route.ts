@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireInstructor } from '@/lib/auth-helpers';
+import { requireApiInstructor , authErrorResponse } from '@/lib/auth-helpers';
 import {
   createLessonSchema,
   reorderLessonsSchema,
 } from '@/lib/validations/course';
 
 async function verifySectionOwner(sectionId: string) {
-  const user = await requireInstructor();
+  const user = await requireApiInstructor();
   const section = await prisma.section.findUnique({
     where: { id: sectionId },
     include: { course: { select: { instructorId: true } } },
@@ -63,10 +63,12 @@ export async function PATCH(request: Request) {
 
     await verifySectionOwner(sectionId);
 
+    // updateMany + ràng buộc sectionId → chỉ cập nhật lesson THUỘC section này,
+    // chống IDOR (ID lạ bị bỏ qua thay vì ghi đè lesson của instructor khác).
     await prisma.$transaction(
       lessonIds.map((id, index) =>
-        prisma.lesson.update({
-          where: { id },
+        prisma.lesson.updateMany({
+          where: { id, sectionId },
           data: { order: index + 1 },
         })
       )
@@ -96,6 +98,8 @@ async function updateCourseLectureCount(sectionId: string) {
 }
 
 function handleError(err: any) {
+  const authRes = authErrorResponse(err);
+  if (authRes) return authRes;
   if (err instanceof z.ZodError) {
     return NextResponse.json({ message: err.errors[0].message }, { status: 400 });
   }

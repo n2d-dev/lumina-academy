@@ -26,7 +26,8 @@ const TOKEN_TTL_MINUTES = 30;
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email } = forgotSchema.parse(body);
+    const parsed = forgotSchema.parse(body);
+    const email = parsed.email.toLowerCase();
 
     const headersList = headers();
     const ipAddress =

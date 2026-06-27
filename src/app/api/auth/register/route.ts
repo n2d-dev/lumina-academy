@@ -22,9 +22,13 @@ export async function POST(request: Request) {
     const body = await request.json();
     const data = registerSchema.parse(body);
 
+    // Chuẩn hóa email về lowercase để nhất quán với mọi nơi tra cứu
+    // (login web/mobile, forgot-password) → tránh tạo trùng tài khoản theo hoa/thường.
+    const email = data.email.toLowerCase();
+
     // Kiểm tra email đã tồn tại
     const existing = await prisma.user.findUnique({
-      where: { email: data.email },
+      where: { email },
     });
 
     if (existing) {
@@ -36,7 +40,7 @@ export async function POST(request: Request) {
     const user = await prisma.user.create({
       data: {
         name: data.name,
-        email: data.email,
+        email,
         password: hashedPassword,
         role: 'STUDENT',
       },

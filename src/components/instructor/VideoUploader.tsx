@@ -12,8 +12,8 @@ import { formatDuration } from '@/lib/utils';
 const MuxUploader = dynamic(() => import('@mux/mux-uploader-react'), {
   ssr: false,
   loading: () => (
-    <div className="aspect-video bg-neutral-100 rounded-xl flex items-center justify-center">
-      <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
+    <div className="aspect-video bg-muted rounded-xl flex items-center justify-center">
+      <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
     </div>
   ),
 });
@@ -116,7 +116,7 @@ export function VideoUploader({
   // READY: hiển thị video preview
   if (status === 'READY' && playbackId) {
     return (
-      <div className="border-2 border-green-200 bg-green-50 rounded-2xl p-4">
+      <div className="border-2 border-green-200 bg-green-50 dark:bg-green-950/30 rounded-2xl p-4">
         <div className="flex items-center gap-3 mb-3">
           <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0" />
           <div className="flex-1">
@@ -144,17 +144,17 @@ export function VideoUploader({
   // PROCESSING: video đã upload, Mux đang transcode
   if (status === 'PROCESSING') {
     return (
-      <div className="border-2 border-yellow-300 bg-yellow-50 rounded-2xl p-8">
+      <div className="border-2 border-yellow-300 bg-yellow-50 dark:bg-yellow-950/30 rounded-2xl p-8">
         <div className="flex items-center gap-4 mb-4">
           <Loader2 className="w-12 h-12 text-yellow-600 animate-spin flex-shrink-0" />
           <div>
             <p className="font-bold">Đang xử lý video...</p>
-            <p className="text-sm text-neutral-700">
+            <p className="text-sm text-muted-foreground">
               Mux đang transcode video sang nhiều chất lượng (HLS adaptive). Việc này thường mất 1-5 phút tùy độ dài video.
             </p>
           </div>
         </div>
-        <div className="text-xs text-neutral-600 bg-white rounded-lg p-3">
+        <div className="text-xs text-muted-foreground bg-card rounded-lg p-3">
           ✨ Bạn có thể tiếp tục làm việc khác. Trang sẽ tự cập nhật khi xong.
         </div>
       </div>
@@ -164,7 +164,7 @@ export function VideoUploader({
   // UPLOADING: hiện MuxUploader
   if (status === 'UPLOADING' && uploadUrl) {
     return (
-      <div className="border-2 border-yellow-400 rounded-2xl p-6 bg-yellow-50">
+      <div className="border-2 border-yellow-400 rounded-2xl p-6 bg-yellow-50 dark:bg-yellow-950/30">
         <p className="text-sm font-bold mb-3 flex items-center gap-2">
           <Upload className="w-4 h-4" />
           Đang tải video lên Mux
@@ -189,7 +189,7 @@ export function VideoUploader({
             width: '100%',
           }}
         />
-        <p className="text-xs text-neutral-600 mt-3">
+        <p className="text-xs text-muted-foreground mt-3">
           💡 Đừng đóng tab trong khi đang upload. Mux hỗ trợ resumable upload nên nếu lỗi mạng có thể tiếp tục.
         </p>
       </div>
@@ -199,7 +199,7 @@ export function VideoUploader({
   // ERRORED
   if (status === 'ERRORED') {
     return (
-      <div className="border-2 border-red-300 bg-red-50 rounded-2xl p-6">
+      <div className="border-2 border-red-300 bg-red-50 dark:bg-red-950/30 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-3">
           <AlertCircle className="w-6 h-6 text-red-600" />
           <div className="flex-1">
@@ -221,15 +221,15 @@ export function VideoUploader({
     <button
       onClick={handleStartUpload}
       disabled={loading}
-      className="w-full border-2 border-dashed border-neutral-300 rounded-2xl p-12 hover:border-black hover:bg-neutral-50 transition-colors flex flex-col items-center justify-center"
+      className="w-full border-2 border-dashed border-border rounded-2xl p-12 hover:border-foreground hover:bg-muted/40 transition-colors flex flex-col items-center justify-center"
     >
       {loading ? (
-        <Loader2 className="w-12 h-12 text-neutral-400 animate-spin mb-3" />
+        <Loader2 className="w-12 h-12 text-muted-foreground animate-spin mb-3" />
       ) : (
-        <Upload className="w-12 h-12 text-neutral-400 mb-3" />
+        <Upload className="w-12 h-12 text-muted-foreground mb-3" />
       )}
       <p className="font-bold mb-1">Tải video lên</p>
-      <p className="text-xs text-neutral-500">
+      <p className="text-xs text-muted-foreground">
         MP4, MOV, WebM • Tối đa 5GB • Mux sẽ tự transcode
       </p>
     </button>

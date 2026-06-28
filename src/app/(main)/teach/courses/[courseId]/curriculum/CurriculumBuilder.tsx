@@ -234,27 +234,27 @@ export function CurriculumBuilder({ course: initialCourse }: { course: CourseDat
     <div className="max-w-4xl mx-auto p-8 lg:p-12">
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-black mb-2 font-display">Nội dung khóa học</h1>
-        <p className="text-neutral-600">
+        <p className="text-muted-foreground">
           Tổ chức nội dung thành chương và bài học. Học viên sẽ học theo thứ tự bạn sắp xếp.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="bg-white rounded-2xl p-6 border border-neutral-100 mb-6">
+      <div className="bg-card rounded-2xl p-6 border border-border mb-6">
         <div className="grid grid-cols-3 gap-6">
           <div>
             <p className="text-2xl font-black font-display">{course.sections.length}</p>
-            <p className="text-sm text-neutral-600">Chương</p>
+            <p className="text-sm text-muted-foreground">Chương</p>
           </div>
           <div>
             <p className="text-2xl font-black font-display">{totalLessons}</p>
-            <p className="text-sm text-neutral-600">Bài học</p>
+            <p className="text-sm text-muted-foreground">Bài học</p>
           </div>
           <div>
             <p className="text-2xl font-black font-display">
               {formatDuration(totalDuration)}
             </p>
-            <p className="text-sm text-neutral-600">Tổng thời lượng</p>
+            <p className="text-sm text-muted-foreground">Tổng thời lượng</p>
           </div>
         </div>
       </div>
@@ -282,7 +282,7 @@ export function CurriculumBuilder({ course: initialCourse }: { course: CourseDat
 
         <button
           onClick={handleAddSection}
-          className="w-full py-6 border-2 border-dashed border-neutral-300 rounded-2xl text-sm font-bold text-neutral-500 hover:border-black hover:text-black flex items-center justify-center gap-2 transition-colors"
+          className="w-full py-6 border-2 border-dashed border-border rounded-2xl text-sm font-bold text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2 transition-colors"
         >
           <Plus className="w-5 h-5" />
           Thêm chương mới
@@ -357,14 +357,14 @@ function SectionItem({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
+    <div className="bg-card rounded-2xl border border-border overflow-hidden">
       {/* Section header */}
-      <div className="p-4 bg-neutral-50 flex items-center gap-3">
+      <div className="p-4 bg-muted/40 flex items-center gap-3">
         <div className="flex flex-col">
           <button
             onClick={() => onMove(section.id, 'up')}
             disabled={index === 0}
-            className="p-0.5 hover:bg-neutral-200 rounded disabled:opacity-30"
+            className="p-0.5 hover:bg-muted rounded disabled:opacity-30"
             aria-label="Move up"
           >
             <ChevronRight className="w-3 h-3 -rotate-90" />
@@ -372,7 +372,7 @@ function SectionItem({
           <button
             onClick={() => onMove(section.id, 'down')}
             disabled={index === totalSections - 1}
-            className="p-0.5 hover:bg-neutral-200 rounded disabled:opacity-30"
+            className="p-0.5 hover:bg-muted rounded disabled:opacity-30"
             aria-label="Move down"
           >
             <ChevronRight className="w-3 h-3 rotate-90" />
@@ -381,7 +381,7 @@ function SectionItem({
 
         <button
           onClick={() => setExpanded(!expanded)}
-          className="p-1 hover:bg-neutral-200 rounded"
+          className="p-1 hover:bg-muted rounded"
         >
           {expanded ? (
             <ChevronDown className="w-4 h-4" />
@@ -390,7 +390,7 @@ function SectionItem({
           )}
         </button>
 
-        <span className="text-xs font-bold text-neutral-500 uppercase">
+        <span className="text-xs font-bold text-muted-foreground uppercase">
           Chương {index + 1}
         </span>
 
@@ -412,13 +412,13 @@ function SectionItem({
           </h3>
         )}
 
-        <span className="text-xs text-neutral-500">
+        <span className="text-xs text-muted-foreground">
           {section.lessons.length} bài
         </span>
 
         <button
           onClick={() => onDelete(section.id)}
-          className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-lg"
+          className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:bg-red-950/30 rounded-lg"
           aria-label="Delete"
         >
           <Trash2 className="w-4 h-4" />
@@ -427,7 +427,7 @@ function SectionItem({
 
       {/* Lessons */}
       {expanded && (
-        <div className="divide-y divide-neutral-100">
+        <div className="divide-y divide-border">
           {section.lessons.map((lesson, lIdx) => (
             <LessonRow
               key={lesson.id}
@@ -441,7 +441,7 @@ function SectionItem({
           ))}
           <button
             onClick={() => onAddLesson(section.id)}
-            className="w-full p-4 text-sm font-medium text-neutral-500 hover:bg-neutral-50 hover:text-black flex items-center gap-2"
+            className="w-full p-4 text-sm font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             Thêm bài học
@@ -470,33 +470,33 @@ function LessonRow({
   onMove: (direction: 'up' | 'down') => void;
 }) {
   return (
-    <div className="p-4 flex items-center gap-3 hover:bg-neutral-50 group">
+    <div className="p-4 flex items-center gap-3 hover:bg-muted/40 group">
       <div className="flex flex-col">
         <button
           onClick={() => onMove('up')}
           disabled={index === 0}
-          className="p-0.5 hover:bg-neutral-200 rounded disabled:opacity-30"
+          className="p-0.5 hover:bg-muted rounded disabled:opacity-30"
         >
           <ChevronRight className="w-3 h-3 -rotate-90" />
         </button>
         <button
           onClick={() => onMove('down')}
           disabled={index === totalLessons - 1}
-          className="p-0.5 hover:bg-neutral-200 rounded disabled:opacity-30"
+          className="p-0.5 hover:bg-muted rounded disabled:opacity-30"
         >
           <ChevronRight className="w-3 h-3 rotate-90" />
         </button>
       </div>
 
-      <span className="text-xs text-neutral-400 w-6">#{index + 1}</span>
+      <span className="text-xs text-muted-foreground w-6">#{index + 1}</span>
 
       <div className="flex-1 min-w-0">
         <p className="font-medium text-sm truncate">{lesson.title}</p>
-        <div className="flex items-center gap-2 text-xs text-neutral-500 mt-0.5">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
           <VideoStatusBadge status={lesson.muxStatus} />
           {lesson.duration > 0 && <span>• {formatDuration(lesson.duration)}</span>}
           {lesson.isPreview && (
-            <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-[10px] font-bold">
+            <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/40 text-blue-700 rounded text-[10px] font-bold">
               PREVIEW
             </span>
           )}
@@ -505,14 +505,14 @@ function LessonRow({
 
       <button
         onClick={onEdit}
-        className="px-3 py-1.5 text-xs font-bold border border-neutral-200 rounded-lg hover:border-black flex items-center gap-1"
+        className="px-3 py-1.5 text-xs font-bold border border-border rounded-lg hover:border-foreground flex items-center gap-1"
       >
         <Edit2 className="w-3 h-3" />
         Sửa
       </button>
       <button
         onClick={onDelete}
-        className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-lg"
+        className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:bg-red-950/30 rounded-lg"
         aria-label="Delete lesson"
       >
         <Trash2 className="w-4 h-4" />

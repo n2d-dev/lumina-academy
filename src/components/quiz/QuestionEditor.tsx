@@ -97,7 +97,7 @@ export function QuestionEditor({ initialData, onSave, onCancel, saving }: Props)
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 border-2 border-yellow-400 space-y-5">
+    <div className="bg-card rounded-2xl p-6 border-2 border-yellow-400 space-y-5">
       {/* Type selector */}
       <div>
         <label className="text-sm font-bold mb-2 block">Loại câu hỏi</label>
@@ -108,8 +108,8 @@ export function QuestionEditor({ initialData, onSave, onCancel, saving }: Props)
               onClick={() => handleTypeChange(t)}
               className={`px-3 py-2 text-xs font-bold rounded-lg border-2 transition-all ${
                 type === t
-                  ? 'border-black bg-black text-white'
-                  : 'border-neutral-200 hover:border-neutral-400'
+                  ? 'border-foreground bg-primary text-primary-foreground'
+                  : 'border-border hover:border-neutral-400'
               }`}
             >
               {TYPE_LABELS[t]}
@@ -128,7 +128,7 @@ export function QuestionEditor({ initialData, onSave, onCancel, saving }: Props)
           onChange={(e) => setText(e.target.value)}
           rows={3}
           maxLength={2000}
-          className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl outline-none focus:border-black resize-none"
+          className="w-full px-4 py-3 border-2 border-border rounded-xl outline-none focus:border-foreground resize-none"
           placeholder="Nhập câu hỏi..."
         />
       </div>
@@ -153,14 +153,14 @@ export function QuestionEditor({ initialData, onSave, onCancel, saving }: Props)
       {/* Explanation */}
       <div>
         <label className="text-sm font-bold mb-2 block">
-          Giải thích <span className="text-neutral-400 font-normal">(tùy chọn)</span>
+          Giải thích <span className="text-muted-foreground font-normal">(tùy chọn)</span>
         </label>
         <textarea
           value={explanation}
           onChange={(e) => setExplanation(e.target.value)}
           rows={2}
           maxLength={2000}
-          className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl outline-none focus:border-black resize-none"
+          className="w-full px-4 py-3 border-2 border-border rounded-xl outline-none focus:border-foreground resize-none"
           placeholder="Hiển thị cho học viên sau khi submit..."
         />
       </div>
@@ -179,7 +179,7 @@ export function QuestionEditor({ initialData, onSave, onCancel, saving }: Props)
       </div>
 
       {/* Actions */}
-      <div className="flex justify-end gap-2 pt-4 border-t border-neutral-100">
+      <div className="flex justify-end gap-2 pt-4 border-t border-border">
         <Button variant="outline" onClick={onCancel} disabled={saving}>
           Hủy
         </Button>
@@ -236,7 +236,7 @@ function ChoicesEditor({
 
   return (
     <div className="space-y-2">
-      <p className="text-xs text-neutral-500 mb-2">
+      <p className="text-xs text-muted-foreground mb-2">
         {isSingle
           ? '👆 Click vào ô tròn để chọn đáp án đúng'
           : '👆 Click vào ô vuông để chọn các đáp án đúng (có thể chọn nhiều)'}
@@ -246,7 +246,7 @@ function ChoicesEditor({
         <div
           key={choice.id}
           className={`flex items-center gap-2 p-2 rounded-lg border-2 transition-all ${
-            choice.isCorrect ? 'border-green-300 bg-green-50' : 'border-neutral-200'
+            choice.isCorrect ? 'border-green-300 bg-green-50 dark:bg-green-950/30' : 'border-border'
           }`}
         >
           <button
@@ -258,12 +258,12 @@ function ChoicesEditor({
               choice.isCorrect ? (
                 <CheckCircle2 className="w-5 h-5 text-green-600" />
               ) : (
-                <Circle className="w-5 h-5 text-neutral-400" />
+                <Circle className="w-5 h-5 text-muted-foreground" />
               )
             ) : choice.isCorrect ? (
               <CheckSquare className="w-5 h-5 text-green-600" />
             ) : (
-              <Square className="w-5 h-5 text-neutral-400" />
+              <Square className="w-5 h-5 text-muted-foreground" />
             )}
           </button>
 
@@ -278,7 +278,7 @@ function ChoicesEditor({
           {!isFixed && (
             <button
               onClick={() => handleRemove(idx)}
-              className="p-2 text-neutral-400 hover:text-red-500"
+              className="p-2 text-muted-foreground hover:text-red-500"
               aria-label="Remove"
             >
               <X className="w-4 h-4" />
@@ -290,7 +290,7 @@ function ChoicesEditor({
       {!isFixed && choices.length < 6 && (
         <button
           onClick={handleAdd}
-          className="w-full py-2 border-2 border-dashed border-neutral-300 rounded-lg text-sm font-medium text-neutral-500 hover:border-black hover:text-black flex items-center justify-center gap-2"
+          className="w-full py-2 border-2 border-dashed border-border rounded-lg text-sm font-medium text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2"
         >
           <Plus className="w-4 h-4" />
           Thêm đáp án
@@ -330,7 +330,7 @@ function ShortAnswerEditor({
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-neutral-500 mb-2">
+      <p className="text-xs text-muted-foreground mb-2">
         Nhập các đáp án được chấp nhận. Học viên sẽ pass nếu trả lời khớp với một trong các đáp án này.
       </p>
 
@@ -345,7 +345,7 @@ function ShortAnswerEditor({
           {config.acceptedAnswers.length > 1 && (
             <button
               onClick={() => handleRemoveAnswer(idx)}
-              className="p-2 text-neutral-400 hover:text-red-500"
+              className="p-2 text-muted-foreground hover:text-red-500"
             >
               <X className="w-4 h-4" />
             </button>
@@ -355,7 +355,7 @@ function ShortAnswerEditor({
 
       <button
         onClick={handleAddAnswer}
-        className="w-full py-2 border-2 border-dashed border-neutral-300 rounded-lg text-sm font-medium text-neutral-500 hover:border-black hover:text-black flex items-center justify-center gap-2"
+        className="w-full py-2 border-2 border-dashed border-border rounded-lg text-sm font-medium text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2"
       >
         <Plus className="w-4 h-4" />
         Thêm đáp án chấp nhận

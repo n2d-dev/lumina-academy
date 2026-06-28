@@ -27,10 +27,13 @@ export function CourseCard({ course }: CourseCardProps) {
   };
 
   return (
-    <Link href={`/courses/${course.slug}`} className="group block">
+    <Link
+      href={`/courses/${course.slug}`}
+      className="group block transition-transform duration-300 hover:-translate-y-1"
+    >
       {/* Thumbnail */}
       <div
-        className="relative overflow-hidden rounded-xl sm:rounded-2xl mb-2 sm:mb-4 aspect-[16/10]"
+        className="relative overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-4 aspect-[16/10] shadow-sm group-hover:shadow-xl group-hover:shadow-foreground/[0.08] transition-shadow duration-300"
         style={{ background: GRADIENTS[course.thumbnail ?? 'gradient-blue'] }}
       >
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all" />
@@ -76,19 +79,19 @@ export function CourseCard({ course }: CourseCardProps) {
           {course.title}
         </h3>
 
-        <p className="text-xs text-neutral-600 mb-1 sm:mb-2 truncate">{course.instructor.name}</p>
+        <p className="text-xs text-muted-foreground mb-1 sm:mb-2 truncate">{course.instructor.name}</p>
 
         <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-3">
           <span className="font-bold text-amber-600 text-xs">
             {course.averageRating.toFixed(1)}
           </span>
           <StarRating rating={course.averageRating} size="sm" />
-          <span className="text-xs text-neutral-500 hidden sm:inline">
+          <span className="text-xs text-muted-foreground hidden sm:inline">
             ({formatNumber(course.totalReviews)})
           </span>
         </div>
 
-        <div className="hidden sm:flex items-center gap-3 text-xs text-neutral-600 mb-3">
+        <div className="hidden sm:flex items-center gap-3 text-xs text-muted-foreground mb-3">
           <span className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
             {formatDuration(course.totalDuration)}
@@ -102,7 +105,7 @@ export function CourseCard({ course }: CourseCardProps) {
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
           <span className="text-sm sm:text-lg font-black">{formatPrice(course.price)}</span>
           {course.originalPrice && course.originalPrice > course.price && (
-            <span className="text-xs text-neutral-400 line-through">
+            <span className="text-xs text-muted-foreground line-through">
               {formatPrice(course.originalPrice)}
             </span>
           )}

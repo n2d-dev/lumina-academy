@@ -65,18 +65,18 @@ export function PWAProvider() {
   if (!showBanner || dismissed) return null;
 
   return (
-    <div className="fixed bottom-20 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-80 z-50 bg-black text-white rounded-2xl p-4 shadow-2xl flex items-center gap-3 animate-slide-up">
+    <div className="fixed bottom-20 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-80 z-50 bg-primary text-primary-foreground rounded-2xl p-4 shadow-2xl flex items-center gap-3 animate-slide-up">
       <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
         <Download className="w-5 h-5" />
       </div>
       <div className="flex-1 min-w-0">
         <p className="font-bold text-sm">Thêm vào màn hình chính</p>
-        <p className="text-xs text-neutral-400 mt-0.5">Truy cập nhanh hơn, học mọi lúc</p>
+        <p className="text-xs text-muted-foreground mt-0.5">Truy cập nhanh hơn, học mọi lúc</p>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         <button
           onClick={handleInstall}
-          className="px-3 py-1.5 bg-white text-black text-xs font-bold rounded-full active:scale-95 transition-all touch-manipulation"
+          className="px-3 py-1.5 bg-card text-black text-xs font-bold rounded-full active:scale-95 transition-all touch-manipulation"
         >
           Cài đặt
         </button>

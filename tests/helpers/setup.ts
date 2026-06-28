@@ -16,7 +16,8 @@ import { cleanup } from '@testing-library/react';
 config({ path: '.env.test' });
 
 // Force NODE_ENV cho tests (Next.js env validation)
-process.env.NODE_ENV = 'test';
+// NODE_ENV được khai báo readonly trong @types/node → dùng vi.stubEnv để gán an toàn.
+vi.stubEnv('NODE_ENV', 'test');
 
 // QUAN TRỌNG: Đảm bảo RESEND_API_KEY là empty để emails KHÔNG gửi thật trong test
 // (nếu test dev quên set, không bị ăn quota Resend)

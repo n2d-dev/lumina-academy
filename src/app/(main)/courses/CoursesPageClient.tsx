@@ -56,29 +56,29 @@ export function CoursesPageClient({ initialCourses, initialCategory, initialQuer
   }, [initialCourses, category, query, sortBy]);
 
   return (
-    <div className="bg-white min-h-screen">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-12">
-        <div className="mb-10">
+    <div className="bg-card min-h-screen">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
+        <div className="mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-2 sm:mb-3 font-display">
             Khám phá khóa học
           </h1>
-          <p className="text-neutral-600">
+          <p className="text-muted-foreground text-base sm:text-lg">
             Hơn {initialCourses.length}+ khóa học chất lượng đang chờ bạn
           </p>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-8 sm:mb-10">
           <CategoryFilter selected={category} onSelect={setCategory} />
         </div>
 
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-neutral-600">
-            <strong className="text-black">{filteredCourses.length}</strong> khóa học
+          <p className="text-sm text-muted-foreground">
+            <strong className="text-foreground">{filteredCourses.length}</strong> khóa học
           </p>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            className="px-4 py-2 bg-neutral-100 rounded-full text-sm font-medium outline-none"
+            className="px-4 py-2 bg-muted rounded-full text-sm font-medium outline-none"
           >
             <option value="popular">Phổ biến nhất</option>
             <option value="rating">Đánh giá cao nhất</option>

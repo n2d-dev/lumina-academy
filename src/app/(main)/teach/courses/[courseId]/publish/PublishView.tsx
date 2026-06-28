@@ -57,14 +57,14 @@ export function PublishView({ course, checks }: Props) {
     <div className="max-w-3xl mx-auto p-8 lg:p-12">
       <div className="mb-8">
         <h1 className="text-3xl font-black mb-2 font-display">Xuất bản khóa học</h1>
-        <p className="text-neutral-600">
+        <p className="text-muted-foreground">
           Đảm bảo khóa học đã sẵn sàng trước khi public cho hàng triệu học viên.
         </p>
       </div>
 
       {/* Status banner */}
       {course.status === 'PUBLISHED' && (
-        <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-5 mb-6 flex items-center gap-3">
+        <div className="bg-green-50 dark:bg-green-950/30 border-2 border-green-200 rounded-2xl p-5 mb-6 flex items-center gap-3">
           <CheckCircle2 className="w-6 h-6 text-green-600" />
           <div className="flex-1">
             <p className="font-bold text-green-900">Khóa học đang được xuất bản</p>
@@ -82,7 +82,7 @@ export function PublishView({ course, checks }: Props) {
       )}
 
       {/* Checklist */}
-      <div className="bg-white rounded-2xl p-6 border border-neutral-100 mb-6">
+      <div className="bg-card rounded-2xl p-6 border border-border mb-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold">Checklist trước khi xuất bản</h3>
           <span
@@ -95,7 +95,7 @@ export function PublishView({ course, checks }: Props) {
         </div>
 
         {/* Progress bar */}
-        <div className="h-2 bg-neutral-100 rounded-full overflow-hidden mb-6">
+        <div className="h-2 bg-muted rounded-full overflow-hidden mb-6">
           <div
             className={`h-full transition-all ${
               allPassed ? 'bg-green-500' : 'bg-yellow-400'
@@ -109,7 +109,7 @@ export function PublishView({ course, checks }: Props) {
             <li
               key={idx}
               className={`flex items-center gap-3 p-3 rounded-xl ${
-                check.passed ? 'bg-green-50' : 'bg-orange-50'
+                check.passed ? 'bg-green-50 dark:bg-green-950/30' : 'bg-orange-50 dark:bg-orange-950/30'
               }`}
             >
               {check.passed ? (
@@ -130,16 +130,16 @@ export function PublishView({ course, checks }: Props) {
       </div>
 
       {/* Action */}
-      <div className="bg-white rounded-2xl p-6 border border-neutral-100 mb-6">
+      <div className="bg-card rounded-2xl p-6 border border-border mb-6">
         {course.status === 'DRAFT' ? (
           <>
             <div className="flex items-start gap-4 mb-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-950/40 rounded-2xl flex items-center justify-center flex-shrink-0">
                 <Rocket className="w-6 h-6 text-yellow-600" />
               </div>
               <div className="flex-1">
                 <h3 className="font-bold mb-1">Sẵn sàng xuất bản?</h3>
-                <p className="text-sm text-neutral-600">
+                <p className="text-sm text-muted-foreground">
                   Khi xuất bản, khóa học sẽ hiển thị công khai cho tất cả học viên trên Lumina.
                   Bạn vẫn có thể chỉnh sửa nội dung sau khi xuất bản.
                 </p>
@@ -162,7 +162,7 @@ export function PublishView({ course, checks }: Props) {
         ) : (
           <>
             <h3 className="font-bold mb-2">Chuyển về nháp</h3>
-            <p className="text-sm text-neutral-600 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               Khóa học sẽ bị ẩn khỏi trang chủ và không thể mua mới. Học viên đã đăng ký vẫn có thể truy cập.
             </p>
             <Button variant="outline" onClick={handleUnpublish} disabled={loading}>

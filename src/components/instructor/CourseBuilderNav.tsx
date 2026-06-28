@@ -52,15 +52,15 @@ export function CourseBuilderNav({ courseId, completedSteps = [] }: Props) {
             className={cn(
               'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors touch-manipulation',
               isActive
-                ? 'bg-black text-white'
-                : 'hover:bg-neutral-50 active:bg-neutral-100 text-neutral-700'
+                ? 'bg-primary text-primary-foreground'
+                : 'hover:bg-muted/40 active:bg-muted text-muted-foreground'
             )}
           >
             <div className={cn(
               'w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0',
               isActive ? 'bg-yellow-400 text-black'
-                : isCompleted ? 'bg-green-100 text-green-600'
-                : 'bg-neutral-100 text-neutral-500'
+                : isCompleted ? 'bg-green-100 dark:bg-green-950/40 text-green-600'
+                : 'bg-muted text-muted-foreground'
             )}>
               {isCompleted ? <Check className="w-3.5 h-3.5" /> : idx + 1}
             </div>
@@ -75,18 +75,18 @@ export function CourseBuilderNav({ courseId, completedSteps = [] }: Props) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex w-72 bg-white border-r border-neutral-200 min-h-screen sticky top-0 p-6 flex-col">
+      <aside className="hidden lg:flex w-72 bg-card border-r border-border min-h-screen sticky top-0 p-6 flex-col">
         <div className="mb-6">
-          <Link href="/teach/dashboard" className="text-sm text-neutral-500 hover:text-black">
+          <Link href="/teach/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
             ← Khóa học của tôi
           </Link>
         </div>
         <h2 className="text-base font-bold mb-4">Tạo khóa học</h2>
         <NavItems />
         <div className="mt-auto pt-6">
-          <div className="p-3 bg-yellow-50 rounded-xl">
+          <div className="p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded-xl">
             <p className="text-xs font-bold mb-1">💡 Mẹo</p>
-            <p className="text-xs text-neutral-600 leading-relaxed">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Hoàn thành đầy đủ các bước trước khi xuất bản để khóa học hiển thị tốt nhất.
             </p>
           </div>
@@ -94,21 +94,21 @@ export function CourseBuilderNav({ courseId, completedSteps = [] }: Props) {
       </aside>
 
       {/* Mobile: sticky top bar with step name + hamburger */}
-      <div className="lg:hidden sticky top-0 z-40 bg-white border-b border-neutral-200 px-4 py-3 flex items-center justify-between">
+      <div className="lg:hidden sticky top-0 z-40 bg-card border-b border-border px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/teach/dashboard" className="text-sm text-neutral-500">
+          <Link href="/teach/dashboard" className="text-sm text-muted-foreground">
             ←
           </Link>
           <span className="text-sm font-bold">
             {currentStepData?.label ?? 'Tạo khóa học'}
           </span>
-          <span className="text-xs text-neutral-400">
+          <span className="text-xs text-muted-foreground">
             ({STEPS.findIndex(s => s.id === currentStep) + 1}/{STEPS.length})
           </span>
         </div>
         <button
           onClick={() => setMobileOpen(true)}
-          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral-100 touch-manipulation"
+          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted touch-manipulation"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -121,14 +121,14 @@ export function CourseBuilderNav({ courseId, completedSteps = [] }: Props) {
             className="lg:hidden fixed inset-0 z-50 bg-black/50"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="lg:hidden fixed inset-y-0 left-0 z-60 w-72 bg-white shadow-2xl p-6 flex flex-col overflow-y-auto">
+          <div className="lg:hidden fixed inset-y-0 left-0 z-60 w-72 bg-card shadow-2xl p-6 flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <Link href="/teach/dashboard" className="text-sm text-neutral-500">
+              <Link href="/teach/dashboard" className="text-sm text-muted-foreground">
                 ← Khóa học của tôi
               </Link>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-neutral-100"
+                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-muted"
               >
                 <X className="w-5 h-5" />
               </button>

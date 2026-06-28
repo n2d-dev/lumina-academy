@@ -9,7 +9,7 @@ import {
  */
 export default function TeachPage() {
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-card min-h-screen">
       <HeroSection />
       <StepsSection />
       <BenefitsSection />
@@ -74,7 +74,7 @@ function HeroSection() {
                 >
                   <Icon className="w-6 h-6 text-yellow-400 mb-3" />
                   <div className="text-3xl font-black mb-1 font-display">{stat.value}</div>
-                  <div className="text-sm text-neutral-400">{stat.label}</div>
+                  <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
               );
             })}
@@ -124,12 +124,12 @@ function StepsSection() {
               <div className="absolute -top-4 -left-4 text-9xl font-black text-yellow-100 -z-10 font-display">
                 {step.num}
               </div>
-              <div className="relative p-8 bg-white border-2 border-neutral-100 rounded-2xl hover:border-black transition-all">
-                <div className="w-14 h-14 bg-black rounded-2xl flex items-center justify-center mb-6">
+              <div className="relative p-8 bg-card border-2 border-border rounded-2xl hover:border-foreground transition-all">
+                <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-6">
                   <Icon className="w-7 h-7 text-yellow-400" />
                 </div>
                 <h3 className="text-2xl font-black mb-3 font-display">{step.title}</h3>
-                <p className="text-neutral-600 leading-relaxed">{step.desc}</p>
+                <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
               </div>
             </div>
           );
@@ -167,7 +167,7 @@ function BenefitsSection() {
         {benefits.map((item) => {
           const Icon = item.icon;
           return (
-            <div key={item.title} className="p-8 bg-white border-2 border-neutral-100 rounded-3xl">
+            <div key={item.title} className="p-8 bg-card border-2 border-border rounded-3xl">
               <div
                 className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
                 style={{ backgroundColor: item.color + '20' }}
@@ -175,7 +175,7 @@ function BenefitsSection() {
                 <Icon className="w-7 h-7" style={{ color: item.color }} />
               </div>
               <h3 className="text-2xl font-black mb-3 font-display">{item.title}</h3>
-              <p className="text-neutral-600 leading-relaxed">{item.desc}</p>
+              <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
             </div>
           );
         })}
@@ -188,7 +188,7 @@ function CTASection() {
   return (
     <section className="py-12 sm:py-20 max-w-[1400px] mx-auto px-4 sm:px-6">
       <div className="bg-yellow-400 rounded-3xl p-12 lg:p-20 text-center relative overflow-hidden">
-        <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tight mb-4 sm:mb-6 font-display">
+        <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tight mb-4 sm:mb-6 font-display text-black">
           Sẵn sàng <span className="italic">truyền cảm hứng?</span>
         </h2>
         <p className="text-lg text-black/80 mb-8 max-w-xl mx-auto">
@@ -196,7 +196,7 @@ function CTASection() {
         </p>
         <Link
           href="/teach/dashboard"
-          className="inline-block px-10 py-4 bg-black text-white font-bold rounded-full hover:scale-105 active:scale-95 transition-all touch-manipulation"
+          className="inline-block px-10 py-4 bg-primary text-primary-foreground font-bold rounded-full hover:scale-105 active:scale-95 transition-all touch-manipulation"
         >
           Tạo khóa học miễn phí →
         </Link>

@@ -15,7 +15,7 @@ describe('MoMo Provider', () => {
      * Helper: tạo IPN payload hợp lệ với signature đúng.
      * Mô phỏng đúng cách MoMo gửi callback về.
      */
-    function makeValidIpn(overrides: Partial<Record<string, string>> = {}) {
+    function makeValidIpn(overrides: Partial<Record<string, string>> = {}): Record<string, string> {
       const accessKey = 'F8BBA842ECF85';
       const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
 

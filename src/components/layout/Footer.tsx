@@ -4,7 +4,7 @@ import { Sparkles } from 'lucide-react';
 export function Footer() {
   return (
     <footer className="bg-black text-white py-16">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 mb-8 sm:mb-12">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">

@@ -21,7 +21,7 @@ describe('VNPay Provider', () => {
      * Build VNPay callback hợp lệ với signature đúng.
      * Đúng spec: sort alphabetically + URLSearchParams encoding.
      */
-    function makeValidCallback(overrides: Partial<Record<string, string>> = {}) {
+    function makeValidCallback(overrides: Partial<Record<string, string>> = {}): Record<string, string> {
       const data: Record<string, string> = {
         vnp_Amount: '129000000', // 1,290,000 VND × 100
         vnp_BankCode: 'NCB',

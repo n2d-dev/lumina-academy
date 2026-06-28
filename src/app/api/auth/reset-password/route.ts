@@ -3,6 +3,7 @@ import { z } from 'zod';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/db';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 const resetSchema = z.object({
   token: z.string().min(1, 'Token là bắt buộc'),
@@ -25,6 +26,10 @@ const resetSchema = z.object({
  */
 export async function POST(request: Request) {
   try {
+    // Chống brute-force token: tối đa 10 lần thử / phút / IP.
+    const limited = checkRateLimit(request, 'reset-password', { limit: 10, windowMs: 60_000 });
+    if (limited.response) return limited.response;
+
     const body = await request.json();
     const { token, password } = resetSchema.parse(body);
 

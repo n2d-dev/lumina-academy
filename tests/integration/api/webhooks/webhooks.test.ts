@@ -17,7 +17,7 @@ import {
   disconnectTestDb,
   createTestUser,
   createTestPayment,
-} from '../../helpers/db';
+} from '../../../helpers/db';
 
 vi.mock('@/lib/email', () => ({
   sendOrderConfirmationEmail: vi.fn().mockResolvedValue({ ok: true }),

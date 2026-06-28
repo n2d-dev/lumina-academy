@@ -60,7 +60,7 @@ export function QuizResult({
   courseId,
 }: Props) {
   return (
-    <div className="min-h-screen bg-neutral-50 py-12">
+    <div className="min-h-screen bg-muted/40 py-12">
       <div className="max-w-3xl mx-auto px-6">
         {/* Hero result */}
         <div
@@ -97,7 +97,7 @@ export function QuizResult({
 
           <div className="inline-block">
             <p className="text-7xl font-black font-display">{attempt.score}%</p>
-            <p className="text-sm text-neutral-600 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               {attempt.earnedPoints} / {attempt.totalPoints} điểm
             </p>
           </div>
@@ -105,29 +105,29 @@ export function QuizResult({
 
         {/* Stats summary */}
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-white rounded-2xl p-5 text-center">
+          <div className="bg-card rounded-2xl p-5 text-center">
             <p className="text-3xl font-black font-display">
               {details?.filter((d) => d.isCorrect).length ?? '?'}
             </p>
-            <p className="text-sm text-neutral-600 mt-1">Đúng</p>
+            <p className="text-sm text-muted-foreground mt-1">Đúng</p>
           </div>
-          <div className="bg-white rounded-2xl p-5 text-center">
+          <div className="bg-card rounded-2xl p-5 text-center">
             <p className="text-3xl font-black font-display">
               {details
                 ? details.filter((d) => !d.isCorrect).length
                 : '?'}
             </p>
-            <p className="text-sm text-neutral-600 mt-1">Sai</p>
+            <p className="text-sm text-muted-foreground mt-1">Sai</p>
           </div>
-          <div className="bg-white rounded-2xl p-5 text-center">
+          <div className="bg-card rounded-2xl p-5 text-center">
             <p className="text-3xl font-black font-display">{questions.length}</p>
-            <p className="text-sm text-neutral-600 mt-1">Tổng câu</p>
+            <p className="text-sm text-muted-foreground mt-1">Tổng câu</p>
           </div>
         </div>
 
         {/* Question-by-question review */}
         {details && (
-          <div className="bg-white rounded-3xl p-8">
+          <div className="bg-card rounded-3xl p-8">
             <h2 className="text-xl font-black mb-6 font-display">Xem lại câu trả lời</h2>
             <div className="space-y-6">
               {questions.map((question, idx) => {
@@ -184,7 +184,7 @@ function QuestionReview({
 }) {
   // Render câu trả lời text-based cho user và correct
   const renderAnswer = (answer: string | string[] | null) => {
-    if (!answer) return <em className="text-neutral-400">Không có</em>;
+    if (!answer) return <em className="text-muted-foreground">Không có</em>;
 
     if (question.type === 'SHORT_ANSWER') {
       return <span>"{answer}"</span>;
@@ -194,13 +194,13 @@ function QuestionReview({
     const texts = ids
       .map((id) => question.options.find((o) => o.id === id)?.text)
       .filter(Boolean);
-    return <span>{texts.join(', ') || <em className="text-neutral-400">Không có</em>}</span>;
+    return <span>{texts.join(', ') || <em className="text-muted-foreground">Không có</em>}</span>;
   };
 
   return (
     <div
       className={`p-5 rounded-2xl border-2 ${
-        detail.isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'
+        detail.isCorrect ? 'border-green-200 bg-green-50 dark:bg-green-950/30' : 'border-red-200 bg-red-50 dark:bg-red-950/30'
       }`}
     >
       <div className="flex items-start gap-3 mb-3">
@@ -219,14 +219,14 @@ function QuestionReview({
 
       <div className="ml-9 space-y-2 text-sm">
         <div>
-          <span className="text-neutral-600">Câu trả lời của bạn: </span>
+          <span className="text-muted-foreground">Câu trả lời của bạn: </span>
           <span className={detail.isCorrect ? 'text-green-700 font-bold' : 'text-red-700 font-bold'}>
             {renderAnswer(userAnswer ?? null)}
           </span>
         </div>
         {!detail.isCorrect && (
           <div>
-            <span className="text-neutral-600">Đáp án đúng: </span>
+            <span className="text-muted-foreground">Đáp án đúng: </span>
             <span className="text-green-700 font-bold">
               {renderAnswer(detail.correctAnswer)}
             </span>

@@ -90,7 +90,7 @@ export const authOptions: NextAuthOptions = {
           typeof token.pwcAt === 'number' &&
           dbUser.passwordChangedAt.getTime() > token.pwcAt
         ) {
-          return {}; // token cũ hơn lần đổi mật khẩu → invalid
+          return {} as typeof token; // token cũ hơn lần đổi mật khẩu → invalid
         }
         if (dbUser) token.role = dbUser.role; // giữ role luôn fresh
       }
@@ -99,7 +99,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       // token rỗng (đã bị vô hiệu hóa) → trả session không có user
       if (!token?.id) {
-        return { ...session, user: undefined } as typeof session;
+        return { ...session, user: undefined } as unknown as typeof session;
       }
       if (session.user) {
         (session.user as any).id = token.id;

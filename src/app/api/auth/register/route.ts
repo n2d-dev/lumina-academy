@@ -3,6 +3,7 @@ import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/db';
 import { sendWelcomeEmail } from '@/lib/email';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Tên ít nhất 2 ký tự'),
@@ -19,6 +20,10 @@ const registerSchema = z.object({
  */
 export async function POST(request: Request) {
   try {
+    // Chống spam đăng ký: tối đa 5 lần / phút / IP.
+    const limited = checkRateLimit(request, 'register', { limit: 5, windowMs: 60_000 });
+    if (limited.response) return limited.response;
+
     const body = await request.json();
     const data = registerSchema.parse(body);
 

@@ -15,31 +15,31 @@ export default function AdminUsersPage() {
   ];
 
   const roleColor: Record<string, string> = {
-    ADMIN: 'bg-red-100 text-red-700',
-    INSTRUCTOR: 'bg-yellow-100 text-yellow-700',
-    STUDENT: 'bg-blue-100 text-blue-700',
+    ADMIN: 'bg-red-100 dark:bg-red-950/40 text-red-700',
+    INSTRUCTOR: 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-700',
+    STUDENT: 'bg-blue-100 dark:bg-blue-950/40 text-blue-700',
   };
 
   return (
     <div>
       <div className="mb-8">
         <h1 className="text-2xl sm:text-4xl font-black mb-2 font-display">Quản lý người dùng</h1>
-        <p className="text-neutral-600">{users.length} người dùng</p>
+        <p className="text-muted-foreground">{users.length} người dùng</p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-neutral-100 overflow-hidden">
+      <div className="bg-card rounded-2xl border border-border overflow-hidden">
         <table className="w-full">
-          <thead className="bg-neutral-50">
+          <thead className="bg-muted/40">
             <tr>
-              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-neutral-600">Người dùng</th>
-              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-neutral-600">Vai trò</th>
-              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-neutral-600">Đã đăng ký</th>
-              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-neutral-600">Tham gia</th>
+              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Người dùng</th>
+              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Vai trò</th>
+              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Đã đăng ký</th>
+              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Tham gia</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-neutral-100">
+          <tbody className="divide-y divide-border">
             {users.map((user) => (
-              <tr key={user.id} className="hover:bg-neutral-50">
+              <tr key={user.id} className="hover:bg-muted/40">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold">
@@ -47,7 +47,7 @@ export default function AdminUsersPage() {
                     </div>
                     <div>
                       <p className="font-bold">{user.name}</p>
-                      <p className="text-xs text-neutral-500">{user.email}</p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
                     </div>
                   </div>
                 </td>
@@ -57,7 +57,7 @@ export default function AdminUsersPage() {
                   </span>
                 </td>
                 <td className="px-6 py-4 text-sm">{user.enrolled} khóa học</td>
-                <td className="px-6 py-4 text-sm text-neutral-600">{user.joinedAt}</td>
+                <td className="px-6 py-4 text-sm text-muted-foreground">{user.joinedAt}</td>
               </tr>
             ))}
           </tbody>

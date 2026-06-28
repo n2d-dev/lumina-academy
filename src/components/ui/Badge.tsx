@@ -11,8 +11,8 @@ const badgeVariants = cva(
         new: 'bg-green-500 text-white',
         hot: 'bg-red-500 text-white',
         category: 'bg-white/10 text-white',
-        discount: 'bg-red-100 text-red-700',
-        preview: 'bg-blue-100 text-blue-700',
+        discount: 'bg-red-100 dark:bg-red-950/40 text-red-700',
+        preview: 'bg-blue-100 dark:bg-blue-950/40 text-blue-700',
       },
     },
     defaultVariants: {

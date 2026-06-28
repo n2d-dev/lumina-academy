@@ -87,7 +87,7 @@ export function BasicInfoEditor({ course }: { course: CourseData }) {
       <div className="flex items-start justify-between mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black mb-2 font-display">Thông tin cơ bản</h1>
-          <p className="text-neutral-600">
+          <p className="text-muted-foreground">
             Cung cấp thông tin chi tiết để học viên hiểu rõ về khóa học của bạn.
           </p>
         </div>
@@ -129,7 +129,7 @@ export function BasicInfoEditor({ course }: { course: CourseData }) {
               onChange={(e) => update('description', e.target.value)}
               rows={6}
               maxLength={5000}
-              className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl outline-none focus:border-black resize-none"
+              className="w-full px-4 py-3 border-2 border-border rounded-xl outline-none focus:border-foreground resize-none"
               placeholder="Mô tả về khóa học của bạn..."
             />
             <Counter current={data.description.length} max={5000} min={50} />
@@ -142,7 +142,7 @@ export function BasicInfoEditor({ course }: { course: CourseData }) {
               <select
                 value={data.level}
                 onChange={(e) => update('level', e.target.value)}
-                className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl outline-none focus:border-black"
+                className="w-full px-4 py-3 border-2 border-border rounded-xl outline-none focus:border-foreground"
               >
                 {COURSE_LEVELS.map((l) => (
                   <option key={l} value={l}>
@@ -156,7 +156,7 @@ export function BasicInfoEditor({ course }: { course: CourseData }) {
               <select
                 value={data.language}
                 onChange={(e) => update('language', e.target.value)}
-                className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl outline-none focus:border-black"
+                className="w-full px-4 py-3 border-2 border-border rounded-xl outline-none focus:border-foreground"
               >
                 <option value="vi">Tiếng Việt</option>
                 <option value="en">English</option>
@@ -213,7 +213,7 @@ export function BasicInfoEditor({ course }: { course: CourseData }) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+    <div className="bg-card rounded-2xl p-6 border border-border">
       <h3 className="font-bold mb-4 text-lg">{title}</h3>
       <div className="space-y-4">{children}</div>
     </div>
@@ -237,7 +237,7 @@ function FormField({
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      {hint && <p className="text-xs text-neutral-500 mb-2">{hint}</p>}
+      {hint && <p className="text-xs text-muted-foreground mb-2">{hint}</p>}
       {children}
     </div>
   );
@@ -248,7 +248,7 @@ function Counter({ current, max, min }: { current: number; max: number; min?: nu
   return (
     <p
       className={`text-xs mt-1 ${
-        isUnder ? 'text-red-500' : 'text-neutral-500'
+        isUnder ? 'text-red-500' : 'text-muted-foreground'
       }`}
     >
       {current}/{max} {min ? `(tối thiểu ${min})` : ''}

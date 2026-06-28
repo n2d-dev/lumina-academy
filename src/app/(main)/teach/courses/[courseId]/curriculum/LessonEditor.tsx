@@ -69,15 +69,15 @@ export function LessonEditor({ lesson: initialLesson, onSave, onClose }: Props) 
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl w-full max-w-2xl my-12"
+        className="bg-card rounded-3xl w-full max-w-2xl my-12"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
+        <div className="p-6 border-b border-border flex items-center justify-between">
           <h2 className="text-xl font-black font-display">Chỉnh sửa bài học</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-neutral-100 rounded-lg"
+            className="p-2 hover:bg-muted rounded-lg"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -105,7 +105,7 @@ export function LessonEditor({ lesson: initialLesson, onSave, onClose }: Props) 
               onChange={(e) => update('description', e.target.value)}
               rows={4}
               maxLength={2000}
-              className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl outline-none focus:border-black resize-none"
+              className="w-full px-4 py-3 border-2 border-border rounded-xl outline-none focus:border-foreground resize-none"
               placeholder="Mô tả ngắn gọn nội dung bài học..."
             />
           </div>
@@ -121,10 +121,10 @@ export function LessonEditor({ lesson: initialLesson, onSave, onClose }: Props) 
           </div>
 
           {/* Preview toggle */}
-          <div className="flex items-center justify-between p-4 bg-neutral-50 rounded-xl">
+          <div className="flex items-center justify-between p-4 bg-muted/40 rounded-xl">
             <div>
               <p className="font-bold text-sm">Cho phép xem trước miễn phí</p>
-              <p className="text-xs text-neutral-600 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Học viên chưa mua khóa học có thể xem bài này
               </p>
             </div>
@@ -137,7 +137,7 @@ export function LessonEditor({ lesson: initialLesson, onSave, onClose }: Props) 
               }`}
             >
               <span
-                className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform shadow ${
+                className={`absolute top-0.5 w-5 h-5 bg-card rounded-full transition-transform shadow ${
                   lesson.isPreview ? 'translate-x-6' : 'translate-x-0.5'
                 }`}
               />
@@ -146,7 +146,7 @@ export function LessonEditor({ lesson: initialLesson, onSave, onClose }: Props) 
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-neutral-100 flex justify-end gap-3">
+        <div className="p-6 border-t border-border flex justify-end gap-3">
           <Button variant="outline" onClick={onClose} disabled={saving}>
             Hủy
           </Button>

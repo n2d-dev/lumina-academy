@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -63,6 +63,16 @@ export function QuizTakerClient({
   const [result, setResult] = useState<any>(null);
   const [details, setDetails] = useState<any>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  // Số lần đã làm (tính cả các lần retake trong session), khởi tạo từ server.
+  const [attemptsUsed, setAttemptsUsed] = useState(previousAttempts);
+
+  // Guard chống nộp trùng (timer + click). Ref là synchronous nên đáng tin hơn `loading`.
+  const submittingRef = useRef(false);
+  // Snapshot answers mới nhất để timer auto-submit không bị stale closure.
+  const answersRef = useRef(answers);
+  useEffect(() => {
+    answersRef.current = answers;
+  }, [answers]);
 
   // Timer logic
   useEffect(() => {
@@ -70,6 +80,7 @@ export function QuizTakerClient({
     if (timeLeft === null) return;
 
     if (timeLeft <= 0) {
+      setTimeLeft(null); // dừng timer, tránh effect tái nhập gọi submit lần 2
       handleSubmit();
       return;
     }
@@ -80,6 +91,7 @@ export function QuizTakerClient({
   }, [phase, timeLeft]);
 
   const handleStart = () => {
+    submittingRef.current = false;
     setPhase('taking');
     if (quiz.timeLimit) setTimeLeft(quiz.timeLimit * 60);
   };
@@ -89,20 +101,27 @@ export function QuizTakerClient({
   };
 
   const handleSubmit = async () => {
+    // Chặn nộp trùng: timer auto-submit và nút bấm không thể tạo 2 attempt.
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     try {
       const res = await call(`/api/quiz/${quiz.id}/submit`, {
         method: 'POST',
-        body: { answers },
+        body: { answers: answersRef.current },
       });
       setResult(res.attempt);
       setDetails(res.details);
+      setAttemptsUsed((n) => n + 1);
       setPhase('result');
     } catch {
+      // Nộp lỗi → cho phép thử lại
+      submittingRef.current = false;
       // Error toast đã handled trong useApi
     }
   };
 
   const handleRetake = () => {
+    submittingRef.current = false;
     setPhase('intro');
     setCurrentIdx(0);
     setAnswers({});
@@ -118,7 +137,7 @@ export function QuizTakerClient({
       <IntroPhase
         quiz={quiz}
         questions={questions}
-        previousAttempts={previousAttempts}
+        previousAttempts={attemptsUsed}
         bestScore={bestScore}
         courseId={courseId}
         onStart={handleStart}
@@ -134,9 +153,7 @@ export function QuizTakerClient({
         answers={answers}
         details={details}
         passingScore={quiz.passingScore}
-        canRetake={
-          quiz.maxAttempts === 0 || previousAttempts + 1 < quiz.maxAttempts
-        }
+        canRetake={quiz.maxAttempts === 0 || attemptsUsed < quiz.maxAttempts}
         onRetake={handleRetake}
         courseId={courseId}
       />

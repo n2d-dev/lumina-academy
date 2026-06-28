@@ -36,7 +36,6 @@ export async function cleanDatabase(prisma: PrismaClient = getTestPrisma()): Pro
   // Cách an toàn hơn: xoá theo đúng thứ tự dependency
   await prisma.$transaction([
     prisma.lessonProgress.deleteMany(),
-    prisma.quizSubmission.deleteMany(),
     prisma.quizAttempt.deleteMany(),
     prisma.assignmentSubmission.deleteMany(),
     prisma.review.deleteMany(),

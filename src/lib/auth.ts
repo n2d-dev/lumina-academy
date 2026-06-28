@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials.email.toLowerCase() },
         });
 
         if (!user || !user.password) {
@@ -70,13 +70,37 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
+      // Lúc đăng nhập: lưu id/role + mốc thời gian phát hành token (pwcAt).
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
+        token.pwcAt = Date.now();
+        return token;
+      }
+
+      // Các request sau: vô hiệu hóa token nếu mật khẩu đã đổi SAU khi token phát hành.
+      // Đây là cơ chế revoke thật sự cho JWT strategy (không có Session table để xóa).
+      if (token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { role: true, passwordChangedAt: true },
+        });
+        if (
+          dbUser?.passwordChangedAt &&
+          typeof token.pwcAt === 'number' &&
+          dbUser.passwordChangedAt.getTime() > token.pwcAt
+        ) {
+          return {} as typeof token; // token cũ hơn lần đổi mật khẩu → invalid
+        }
+        if (dbUser) token.role = dbUser.role; // giữ role luôn fresh
       }
       return token;
     },
     async session({ session, token }) {
+      // token rỗng (đã bị vô hiệu hóa) → trả session không có user
+      if (!token?.id) {
+        return { ...session, user: undefined } as unknown as typeof session;
+      }
       if (session.user) {
         (session.user as any).id = token.id;
         (session.user as any).role = token.role;

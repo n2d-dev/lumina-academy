@@ -40,16 +40,16 @@ function SuccessContent() {
   if (status === 'failed') {
     return (
       <div className="max-w-md w-full px-5 sm:px-6 text-center">
-        <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="w-24 h-24 bg-red-100 dark:bg-red-950/40 rounded-full flex items-center justify-center mx-auto mb-6">
           <XCircle className="w-12 h-12 text-red-500" />
         </div>
         <h1 className="text-3xl sm:text-4xl font-black mb-3 font-display">Thanh toán thất bại</h1>
-        <p className="text-neutral-600 mb-2">
+        <p className="text-muted-foreground mb-2">
           Giao dịch qua {providerLabel[provider] ?? provider} chưa hoàn tất.
         </p>
         {orderId && (
-          <p className="text-sm text-neutral-500 mb-8">
-            Mã đơn: <code className="bg-neutral-100 px-2 py-1 rounded">{orderId}</code>
+          <p className="text-sm text-muted-foreground mb-8">
+            Mã đơn: <code className="bg-muted px-2 py-1 rounded">{orderId}</code>
           </p>
         )}
         <div className="flex gap-3 justify-center">
@@ -68,14 +68,14 @@ function SuccessContent() {
 
   return (
     <div className="max-w-md w-full px-5 sm:px-6 text-center">
-      <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+      <div className="w-24 h-24 bg-green-100 dark:bg-green-950/40 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
         <CheckCircle2 className="w-12 h-12 text-green-500" />
       </div>
       <h1 className="text-3xl sm:text-4xl font-black mb-3 font-display">Thanh toán thành công!</h1>
-      <p className="text-neutral-600 mb-2">
+      <p className="text-muted-foreground mb-2">
         Cảm ơn bạn đã đăng ký qua {providerLabel[provider] ?? provider}.
       </p>
-      <p className="text-neutral-600 mb-8">
+      <p className="text-muted-foreground mb-8">
         Khóa học đã được thêm vào danh sách học tập của bạn.
       </p>
       <Link href="/my-learning">
@@ -87,7 +87,7 @@ function SuccessContent() {
 
 export default function CheckoutSuccessPage() {
   return (
-    <div className="bg-white min-h-screen flex items-center justify-center">
+    <div className="bg-card min-h-screen flex items-center justify-center">
       <Suspense fallback={null}>
         <SuccessContent />
       </Suspense>

@@ -2,6 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* ── Design tokens (Lumina v2) ──────────────────────────
+     Palette warm-neutral (ấm nhẹ → cao cấp hơn pure gray).
+     Brand = amber accent + ink. Giá trị HSL channel để áp opacity. */
+  :root {
+    --background: 40 20% 98%;       /* #FAF9F6 warm paper */
+    --foreground: 0 0% 9%;          /* ink */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
+    --muted: 40 16% 95%;
+    --muted-foreground: 30 4% 44%;
+    --border: 40 12% 89%;
+    --input: 40 12% 89%;
+    --ring: 0 0% 9%;
+    --primary: 0 0% 9%;             /* ink */
+    --primary-foreground: 0 0% 100%;
+    --accent: 47 96% 53%;           /* amber #facc15 */
+    --accent-foreground: 0 0% 9%;
+  }
+
+  .dark {
+    --background: 30 8% 7%;         /* #131210 warm charcoal */
+    --foreground: 40 10% 95%;
+    --card: 30 7% 11%;              /* #1C1A18 */
+    --card-foreground: 40 10% 95%;
+    --muted: 30 6% 16%;
+    --muted-foreground: 40 6% 64%;
+    --border: 30 6% 22%;
+    --input: 30 6% 22%;
+    --ring: 0 0% 83%;
+    --primary: 40 10% 96%;          /* near-white invert */
+    --primary-foreground: 0 0% 9%;
+    --accent: 47 96% 53%;
+    --accent-foreground: 0 0% 9%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'ss01', 'cv01';
+  }
+
+  /* Focus ring nhất quán, rõ ràng cho keyboard nav (a11y) */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* Signature "ánh sáng Lumina": quầng sáng amber mềm sau phần tử chủ đạo */
+  .glow-amber {
+    background: radial-gradient(60% 60% at 50% 40%, hsl(var(--accent) / 0.22), transparent 70%);
+  }
+  /* Eyebrow label nhất quán cho mọi section */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-[0.14em] text-muted-foreground;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply w-5 h-px bg-accent;
+  }
+}
+
 @layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
@@ -23,14 +85,14 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: hsl(var(--muted));
 }
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: hsl(var(--border));
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #888;
+  background: hsl(var(--muted-foreground));
 }
 
 /* ── Mobile / PWA utilities ─────────────────────────────── */
@@ -61,6 +123,41 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 /* Fix iOS 100vh bug (browser chrome eats viewport) */
 .min-h-screen { min-height: 100dvh; }
+
+/* Tôn trọng prefers-reduced-motion: chạy animation tức thì (về end-state) → không giấu nội dung */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Hero spotlight (trang chủ) — animation vào trang ───────── */
+@keyframes heroReveal {
+  0%   { opacity: 0; transform: translateY(28px); filter: blur(12px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+@keyframes heroFadeUp {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroZoom {
+  0%   { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+.hero-anim {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-reveal { animation-name: heroReveal; animation-duration: 1.1s; }
+.hero-fade   { animation-name: heroFadeUp; animation-duration: 1s; }
+.hero-zoom   { animation: heroZoom 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim, .hero-zoom { animation: none; opacity: 1; }
+}
 
 /* Larger tap target helper */
 .tap-target {

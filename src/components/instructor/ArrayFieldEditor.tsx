@@ -50,11 +50,11 @@ export function ArrayFieldEditor({
             <span className="text-red-500 ml-1">*</span>
           )}
         </label>
-        <span className="text-xs text-neutral-500">
+        <span className="text-xs text-muted-foreground">
           {values.length}/{maxItems}
         </span>
       </div>
-      {hint && <p className="text-xs text-neutral-500 mb-3">{hint}</p>}
+      {hint && <p className="text-xs text-muted-foreground mb-3">{hint}</p>}
 
       <div className="space-y-2">
         {values.map((value, idx) => (
@@ -68,7 +68,7 @@ export function ArrayFieldEditor({
             <button
               type="button"
               onClick={() => handleRemove(idx)}
-              className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-lg"
+              className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:bg-red-950/30 rounded-lg"
               aria-label="Xóa"
             >
               <X className="w-4 h-4" />
@@ -80,7 +80,7 @@ export function ArrayFieldEditor({
           <button
             type="button"
             onClick={handleAdd}
-            className="w-full py-2.5 border-2 border-dashed border-neutral-300 rounded-xl text-sm font-medium text-neutral-500 hover:border-black hover:text-black flex items-center justify-center gap-2"
+            className="w-full py-2.5 border-2 border-dashed border-border rounded-xl text-sm font-medium text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2"
           >
             <Plus className="w-4 h-4" />
             Thêm mục

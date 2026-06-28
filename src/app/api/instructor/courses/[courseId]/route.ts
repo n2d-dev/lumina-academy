@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireCourseOwner } from '@/lib/auth-helpers';
+import { requireApiCourseOwner , authErrorResponse } from '@/lib/auth-helpers';
 import {
   updateCourseBasicSchema,
   updateCoursePricingSchema,
@@ -18,7 +18,7 @@ interface Params {
  */
 export async function GET(_: Request, { params }: Params) {
   try {
-    await requireCourseOwner(params.courseId);
+    await requireApiCourseOwner(params.courseId);
 
     const course = await prisma.course.findUnique({
       where: { id: params.courseId },
@@ -49,7 +49,7 @@ export async function GET(_: Request, { params }: Params) {
  */
 export async function PATCH(request: Request, { params }: Params) {
   try {
-    await requireCourseOwner(params.courseId);
+    await requireApiCourseOwner(params.courseId);
     const body = await request.json();
     const { section, data } = body as { section: string; data: any };
 
@@ -90,7 +90,7 @@ export async function PATCH(request: Request, { params }: Params) {
  */
 export async function DELETE(_: Request, { params }: Params) {
   try {
-    await requireCourseOwner(params.courseId);
+    await requireApiCourseOwner(params.courseId);
 
     const enrollmentCount = await prisma.enrollment.count({
       where: { courseId: params.courseId },
@@ -139,6 +139,8 @@ async function validateCourseForPublish(courseId: string) {
 }
 
 function handleError(err: any) {
+  const authRes = authErrorResponse(err);
+  if (authRes) return authRes;
   if (err instanceof z.ZodError) {
     return NextResponse.json(
       { message: err.errors[0].message, errors: err.errors },

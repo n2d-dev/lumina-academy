@@ -45,13 +45,18 @@ export function CourseDetailView({ course }: Props) {
   };
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero */}
-      <div className="bg-black text-white">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-12">
+    <div className="bg-background min-h-screen">
+      {/* Hero — banner tối cố định (KHÔNG dùng bg-primary vì token này đảo
+          màu theo theme → ở dark mode sẽ thành nền trắng). Thêm quầng amber. */}
+      <div className="relative overflow-hidden bg-neutral-950 text-white">
+        <div
+          className="pointer-events-none absolute -top-32 right-[-5%] h-[420px] w-[420px] rounded-full blur-3xl"
+          style={{ background: 'radial-gradient(circle, hsl(var(--accent) / 0.18), transparent 70%)' }}
+        />
+        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-12">
           <Link
             href="/courses"
-            className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white mb-6"
+            className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors mb-6"
           >
             <ChevronLeft className="w-4 h-4" />
             Quay lại danh sách
@@ -69,22 +74,22 @@ export function CourseDetailView({ course }: Props) {
                 {course.title}
               </h1>
 
-              <p className="text-lg text-neutral-300 mb-6 leading-relaxed">
+              <p className="text-lg text-white/70 mb-6 leading-relaxed">
                 {course.description}
               </p>
 
               <div className="flex flex-wrap items-center gap-4 mb-6 text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-amber-400">{course.averageRating.toFixed(1)}</span>
+                  <span className="font-bold text-amber-400 tabular-nums">{course.averageRating.toFixed(1)}</span>
                   <StarRating rating={course.averageRating} />
-                  <span className="text-neutral-400">
+                  <span className="text-white/60 tabular-nums">
                     ({formatNumber(course.totalReviews)} đánh giá)
                   </span>
                 </div>
-                <span className="text-neutral-400">•</span>
-                <span className="flex items-center gap-1.5 text-neutral-300">
+                <span className="text-white/40">•</span>
+                <span className="flex items-center gap-1.5 text-white/70">
                   <Users className="w-4 h-4" />
-                  {formatNumber(course.totalStudents)} học viên
+                  <span className="tabular-nums">{formatNumber(course.totalStudents)}</span> học viên
                 </span>
               </div>
 
@@ -93,24 +98,24 @@ export function CourseDetailView({ course }: Props) {
                   {course.instructor.name[0]}
                 </div>
                 <div>
-                  <p className="text-sm">
+                  <p className="text-sm text-white/80">
                     Giảng dạy bởi{' '}
-                    <strong className="text-yellow-400">{course.instructor.name}</strong>
+                    <strong className="text-amber-400">{course.instructor.name}</strong>
                   </p>
-                  <p className="text-xs text-neutral-400">{course.instructor.title}</p>
+                  <p className="text-xs text-white/50">{course.instructor.title}</p>
                 </div>
               </div>
             </div>
 
             {/* Right: purchase card — desktop only */}
             <div className="hidden lg:block">
-              <div className="bg-white rounded-3xl overflow-hidden text-black sticky top-24">
+              <div className="bg-card rounded-3xl overflow-hidden text-foreground sticky top-24">
                 <div
                   className="aspect-video relative"
                   style={{ background: GRADIENTS[course.thumbnail ?? 'gradient-blue'] }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="w-20 h-20 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl">
+                    <button className="w-20 h-20 bg-card rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl">
                       <Play className="w-8 h-8 text-black ml-1" fill="currentColor" />
                     </button>
                   </div>
@@ -118,15 +123,15 @@ export function CourseDetailView({ course }: Props) {
 
                 <div className="p-6">
                   <div className="flex items-baseline gap-3 mb-2">
-                    <span className="text-3xl font-black">{formatPrice(course.price)}</span>
+                    <span className="text-3xl font-black tabular-nums">{formatPrice(course.price)}</span>
                     {course.originalPrice && (
-                      <span className="text-neutral-400 line-through">
+                      <span className="text-muted-foreground line-through tabular-nums">
                         {formatPrice(course.originalPrice)}
                       </span>
                     )}
                   </div>
                   {discount > 0 && (
-                    <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded mb-4">
+                    <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 dark:bg-red-950/40 text-red-700 text-xs font-bold rounded mb-4">
                       <Flame className="w-3 h-3" />
                       Giảm {discount}% • Còn 2 ngày
                     </div>
@@ -134,21 +139,21 @@ export function CourseDetailView({ course }: Props) {
 
                   <button
                     onClick={handleAddToCart}
-                    className="w-full py-4 bg-black text-white font-bold rounded-full hover:bg-neutral-800 active:scale-95 transition-all mb-3 touch-manipulation"
+                    className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary/90 active:scale-95 transition-all mb-3 touch-manipulation"
                   >
                     {inCart ? 'Xem trong giỏ hàng' : 'Thêm vào giỏ hàng'}
                   </button>
 
                   <button
                     onClick={handleBuyNow}
-                    className="w-full py-4 bg-yellow-400 text-black font-bold rounded-full hover:bg-yellow-500 active:scale-95 transition-all mb-3 touch-manipulation"
+                    className="w-full py-4 bg-accent text-accent-foreground font-bold rounded-full hover:brightness-95 active:scale-95 transition-all mb-3 touch-manipulation"
                   >
                     Mua ngay
                   </button>
 
                   <button
                     onClick={() => toggleWishlist(course.id)}
-                    className="w-full py-3 border-2 border-neutral-200 font-bold rounded-full hover:border-black active:scale-95 transition-all flex items-center justify-center gap-2 mb-6 touch-manipulation"
+                    className="w-full py-3 border-2 border-border font-bold rounded-full hover:border-foreground active:scale-95 transition-all flex items-center justify-center gap-2 mb-6 touch-manipulation"
                   >
                     <Heart className={`w-4 h-4 ${inWishlist ? 'fill-red-500 text-red-500' : ''}`} />
                     {inWishlist ? 'Đã yêu thích' : 'Thêm vào yêu thích'}
@@ -166,14 +171,14 @@ export function CourseDetailView({ course }: Props) {
 
       {/* Mobile sticky bottom CTA — only shows on mobile (<lg) */}
       <div
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-neutral-200 px-4 py-3 flex items-center gap-3"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border px-4 py-3 flex items-center gap-3"
         style={{ paddingBottom: 'max(12px, calc(env(safe-area-inset-bottom) + 52px + 12px))' }}
       >
         <div className="flex-1">
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-black">{formatPrice(course.price)}</span>
+            <span className="text-xl font-black tabular-nums">{formatPrice(course.price)}</span>
             {course.originalPrice && (
-              <span className="text-xs text-neutral-400 line-through">
+              <span className="text-xs text-muted-foreground line-through tabular-nums">
                 {formatPrice(course.originalPrice)}
               </span>
             )}
@@ -184,14 +189,14 @@ export function CourseDetailView({ course }: Props) {
         </div>
         <button
           onClick={() => toggleWishlist(course.id)}
-          className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-neutral-200 active:scale-90 transition-all touch-manipulation flex-shrink-0"
+          className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-border active:scale-90 transition-all touch-manipulation flex-shrink-0"
           aria-label="Yêu thích"
         >
-          <Heart className={`w-5 h-5 ${inWishlist ? 'fill-red-500 text-red-500' : 'text-neutral-600'}`} />
+          <Heart className={`w-5 h-5 ${inWishlist ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
         </button>
         <button
           onClick={handleAddToCart}
-          className="px-6 py-3 bg-black text-white font-bold rounded-full active:scale-95 transition-all touch-manipulation text-sm flex-shrink-0"
+          className="px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full active:scale-95 transition-all touch-manipulation text-sm flex-shrink-0"
         >
           {inCart ? 'Xem giỏ hàng' : 'Thêm vào giỏ'}
         </button>
@@ -211,12 +216,12 @@ function CourseIncludes({ course }: { course: Course }) {
 
   return (
     <div className="space-y-3 text-sm">
-      <p className="font-bold text-xs uppercase tracking-wider text-neutral-500 mb-3">
+      <p className="font-bold text-xs uppercase tracking-wider text-muted-foreground mb-3">
         Khóa học bao gồm
       </p>
       {items.map((item, idx) => (
         <div key={idx} className="flex items-center gap-3">
-          <item.icon className="w-4 h-4 text-neutral-500" />
+          <item.icon className="w-4 h-4 text-muted-foreground" />
           <span>{item.text}</span>
         </div>
       ))}

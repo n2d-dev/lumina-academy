@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireInstructor } from '@/lib/auth-helpers';
+import { requireApiInstructor , authErrorResponse } from '@/lib/auth-helpers';
 import { updateQuizSchema } from '@/lib/validations/quiz';
 
 interface Params {
@@ -9,7 +9,7 @@ interface Params {
 }
 
 async function verifyQuizOwner(quizId: string) {
-  const user = await requireInstructor();
+  const user = await requireApiInstructor();
   const quiz = await prisma.quiz.findUnique({
     where: { id: quizId },
     include: {
@@ -72,6 +72,8 @@ export async function DELETE(_: Request, { params }: Params) {
 }
 
 function handleError(err: any) {
+  const authRes = authErrorResponse(err);
+  if (authRes) return authRes;
   if (err instanceof z.ZodError) {
     return NextResponse.json({ message: err.errors[0].message }, { status: 400 });
   }

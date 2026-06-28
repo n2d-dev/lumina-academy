@@ -3,6 +3,7 @@ import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/db';
 import { sendWelcomeEmail } from '@/lib/email';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Tên ít nhất 2 ký tự'),
@@ -19,12 +20,20 @@ const registerSchema = z.object({
  */
 export async function POST(request: Request) {
   try {
+    // Chống spam đăng ký: tối đa 5 lần / phút / IP.
+    const limited = checkRateLimit(request, 'register', { limit: 5, windowMs: 60_000 });
+    if (limited.response) return limited.response;
+
     const body = await request.json();
     const data = registerSchema.parse(body);
 
+    // Chuẩn hóa email về lowercase để nhất quán với mọi nơi tra cứu
+    // (login web/mobile, forgot-password) → tránh tạo trùng tài khoản theo hoa/thường.
+    const email = data.email.toLowerCase();
+
     // Kiểm tra email đã tồn tại
     const existing = await prisma.user.findUnique({
-      where: { email: data.email },
+      where: { email },
     });
 
     if (existing) {
@@ -36,7 +45,7 @@ export async function POST(request: Request) {
     const user = await prisma.user.create({
       data: {
         name: data.name,
-        email: data.email,
+        email,
         password: hashedPassword,
         role: 'STUDENT',
       },

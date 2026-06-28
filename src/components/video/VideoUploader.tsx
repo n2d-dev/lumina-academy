@@ -74,7 +74,7 @@ export function VideoUploader({
   // READY - hiển thị success state với option replace
   if (status === 'READY') {
     return (
-      <div className="border-2 border-green-200 bg-green-50 rounded-xl p-5">
+      <div className="border-2 border-green-200 bg-green-50 dark:bg-green-950/30 rounded-xl p-5">
         <div className="flex items-start gap-3 mb-3">
           <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0" />
           <div className="flex-1">
@@ -101,7 +101,7 @@ export function VideoUploader({
   // PROCESSING - đang transcode
   if (status === 'PROCESSING') {
     return (
-      <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-5">
+      <div className="border-2 border-blue-200 bg-blue-50 dark:bg-blue-950/30 rounded-xl p-5">
         <div className="flex items-start gap-3">
           <Loader2 className="w-6 h-6 text-blue-600 animate-spin flex-shrink-0" />
           <div className="flex-1">
@@ -122,7 +122,7 @@ export function VideoUploader({
   // ERRORED
   if (status === 'ERRORED') {
     return (
-      <div className="border-2 border-red-200 bg-red-50 rounded-xl p-5">
+      <div className="border-2 border-red-200 bg-red-50 dark:bg-red-950/30 rounded-xl p-5">
         <div className="flex items-start gap-3 mb-3">
           <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
           <div className="flex-1">
@@ -143,7 +143,7 @@ export function VideoUploader({
   // UPLOADING - đã có uploadUrl, hiển thị Mux Uploader
   if (status === 'UPLOADING' && uploadUrl) {
     return (
-      <div className="border-2 border-yellow-300 bg-yellow-50 rounded-xl p-5">
+      <div className="border-2 border-yellow-300 bg-yellow-50 dark:bg-yellow-950/30 rounded-xl p-5">
         <p className="font-bold text-sm mb-3">Đang upload lên Mux...</p>
 
         {/* Mux Uploader component handle UI upload */}
@@ -162,7 +162,7 @@ export function VideoUploader({
           }}
         />
 
-        <p className="text-xs text-neutral-600 mt-3">
+        <p className="text-xs text-muted-foreground mt-3">
           ⏱ File lớn có thể mất vài phút. Đừng đóng tab này.
         </p>
       </div>
@@ -171,11 +171,11 @@ export function VideoUploader({
 
   // PENDING / CANCELLED - hiển thị button upload
   return (
-    <div className="border-2 border-dashed border-neutral-300 rounded-xl p-8 hover:border-black transition-colors">
+    <div className="border-2 border-dashed border-border rounded-xl p-8 hover:border-foreground transition-colors">
       <div className="text-center">
-        <Upload className="w-12 h-12 text-neutral-400 mx-auto mb-3" />
+        <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
         <p className="font-bold text-sm mb-1">Upload video bài học</p>
-        <p className="text-xs text-neutral-500 mb-4">
+        <p className="text-xs text-muted-foreground mb-4">
           MP4, MOV, WebM • Tối đa 5GB • Tự động transcode multi-bitrate
         </p>
         <Button onClick={handleStartUpload} disabled={requesting}>
@@ -192,13 +192,13 @@ export function VideoUploader({
           )}
         </Button>
 
-        <p className="text-xs text-neutral-400 mt-4">
+        <p className="text-xs text-muted-foreground mt-4">
           Powered by{' '}
           <a
             href="https://mux.com"
             target="_blank"
             rel="noopener"
-            className="underline hover:text-black"
+            className="underline hover:text-foreground"
           >
             Mux
           </a>

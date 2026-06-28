@@ -175,13 +175,6 @@ export function generateThumbnailToken(
 }
 
 /**
- * Build full streaming URL (HLS) với token
- */
-export function getStreamUrl(playbackId: string, token: string): string {
-  return `https://stream.mux.com/${playbackId}.m3u8?token=${token}`;
-}
-
-/**
  * Build full thumbnail URL với token
  */
 export function getThumbnailUrl(
@@ -194,23 +187,6 @@ export function getThumbnailUrl(
   if (options?.width) params.set('width', String(options.width));
   if (options?.height) params.set('height', String(options.height));
   return `https://image.mux.com/${playbackId}/thumbnail.jpg?${params}`;
-}
-
-/**
- * Map Mux asset status sang DB enum của ta
- */
-export function mapMuxStatus(
-  status: string
-): 'PROCESSING' | 'READY' | 'ERRORED' {
-  switch (status) {
-    case 'ready':
-      return 'READY';
-    case 'errored':
-      return 'ERRORED';
-    case 'preparing':
-    default:
-      return 'PROCESSING';
-  }
 }
 
 /**

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireInstructor } from '@/lib/auth-helpers';
+import { requireApiInstructor , authErrorResponse } from '@/lib/auth-helpers';
 import { createQuizSchema } from '@/lib/validations/quiz';
 
 /**
@@ -10,7 +10,7 @@ import { createQuizSchema } from '@/lib/validations/quiz';
  */
 export async function POST(request: Request) {
   try {
-    const user = await requireInstructor();
+    const user = await requireApiInstructor();
     const body = await request.json();
     const data = createQuizSchema.parse(body);
 
@@ -47,6 +47,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ quiz }, { status: 201 });
   } catch (err: any) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     if (err instanceof z.ZodError) {
       return NextResponse.json({ message: err.errors[0].message }, { status: 400 });
     }

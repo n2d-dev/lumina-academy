@@ -49,7 +49,7 @@ export default function AdminDashboard() {
     <div>
       <div className="mb-8">
         <h1 className="text-4xl font-black mb-2 font-display">Dashboard</h1>
-        <p className="text-neutral-600">Tổng quan hoạt động của Lumina Academy</p>
+        <p className="text-muted-foreground">Tổng quan hoạt động của Lumina Academy</p>
       </div>
 
       {/* Stats grid */}
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
           return (
             <div
               key={stat.label}
-              className="bg-white rounded-2xl p-6 border border-neutral-100"
+              className="bg-card rounded-2xl p-6 border border-border"
             >
               <div className="flex items-start justify-between mb-4">
                 <div
@@ -73,7 +73,7 @@ export default function AdminDashboard() {
                 <div
                   className={cn(
                     'flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full',
-                    isPositive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    isPositive ? 'bg-green-100 dark:bg-green-950/40 text-green-700' : 'bg-red-100 dark:bg-red-950/40 text-red-700'
                   )}
                 >
                   {isPositive ? (
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <p className="text-3xl font-black mb-1 font-display">{stat.value}</p>
-              <p className="text-sm text-neutral-600">{stat.label}</p>
+              <p className="text-sm text-muted-foreground">{stat.label}</p>
             </div>
           );
         })}
@@ -93,16 +93,16 @@ export default function AdminDashboard() {
 
       {/* Quick actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+        <div className="bg-card rounded-2xl p-6 border border-border">
           <h2 className="font-bold text-lg mb-4">Đơn hàng gần đây</h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted-foreground">
             Trong production sẽ hiển thị 10 đơn hàng gần nhất với status, amount, customer.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+        <div className="bg-card rounded-2xl p-6 border border-border">
           <h2 className="font-bold text-lg mb-4">Khóa học bán chạy</h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted-foreground">
             Top 5 khóa học có doanh thu cao nhất trong 30 ngày qua.
           </p>
         </div>

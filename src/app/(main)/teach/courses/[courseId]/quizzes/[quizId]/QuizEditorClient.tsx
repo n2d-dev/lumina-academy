@@ -126,7 +126,7 @@ export function QuizEditorClient({ quiz: initialQuiz, courseId, lessonTitle }: P
       {/* Header */}
       <Link
         href={`/teach/courses/${courseId}/quizzes`}
-        className="flex items-center gap-2 text-sm text-neutral-600 hover:text-black mb-4"
+        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4"
       >
         <ChevronLeft className="w-4 h-4" />
         Quay lại danh sách quiz
@@ -134,10 +134,10 @@ export function QuizEditorClient({ quiz: initialQuiz, courseId, lessonTitle }: P
 
       <div className="flex items-start justify-between mb-2">
         <div>
-          <p className="text-xs text-neutral-500 mb-1">Quiz cho bài: {lessonTitle}</p>
+          <p className="text-xs text-muted-foreground mb-1">Quiz cho bài: {lessonTitle}</p>
           <h1 className="text-2xl sm:text-3xl font-black font-display">{quiz.title}</h1>
           {quiz.description && (
-            <p className="text-neutral-600 mt-2 max-w-2xl">{quiz.description}</p>
+            <p className="text-muted-foreground mt-2 max-w-2xl">{quiz.description}</p>
           )}
         </div>
         <Button variant="outline" onClick={() => setShowSettings(!showSettings)}>
@@ -149,19 +149,19 @@ export function QuizEditorClient({ quiz: initialQuiz, courseId, lessonTitle }: P
       {/* Quick stats */}
       <div className="flex items-center gap-6 mt-4 mb-8 text-sm">
         <div>
-          <span className="text-neutral-500">Số câu:</span>{' '}
+          <span className="text-muted-foreground">Số câu:</span>{' '}
           <strong>{quiz.questions.length}</strong>
         </div>
         <div>
-          <span className="text-neutral-500">Tổng điểm:</span>{' '}
+          <span className="text-muted-foreground">Tổng điểm:</span>{' '}
           <strong>{totalPoints}</strong>
         </div>
         <div>
-          <span className="text-neutral-500">Điểm pass:</span>{' '}
+          <span className="text-muted-foreground">Điểm pass:</span>{' '}
           <strong>{quiz.passingScore}%</strong>
         </div>
         <div>
-          <span className="text-neutral-500">Thời gian:</span>{' '}
+          <span className="text-muted-foreground">Thời gian:</span>{' '}
           <strong>{quiz.timeLimit ? `${quiz.timeLimit} phút` : 'Không giới hạn'}</strong>
         </div>
       </div>
@@ -207,7 +207,7 @@ export function QuizEditorClient({ quiz: initialQuiz, courseId, lessonTitle }: P
         ) : (
           <button
             onClick={() => setCreating(true)}
-            className="w-full py-6 border-2 border-dashed border-neutral-300 rounded-2xl text-sm font-bold text-neutral-500 hover:border-black hover:text-black flex items-center justify-center gap-2"
+            className="w-full py-6 border-2 border-dashed border-border rounded-2xl text-sm font-bold text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2"
           >
             <Plus className="w-5 h-5" />
             Thêm câu hỏi mới
@@ -247,7 +247,7 @@ function QuestionRow({
   })();
 
   return (
-    <div className="bg-white rounded-2xl p-5 border border-neutral-200 hover:border-black transition-colors group">
+    <div className="bg-card rounded-2xl p-5 border border-border hover:border-foreground transition-colors group">
       <div className="flex items-start gap-3">
         <span className="font-black text-2xl text-neutral-300 font-display">
           {index + 1}
@@ -259,8 +259,8 @@ function QuestionRow({
             <span className="text-xs font-bold text-yellow-700 uppercase tracking-wider">
               {TYPE_LABELS[question.type]}
             </span>
-            <span className="text-xs text-neutral-400">•</span>
-            <span className="text-xs text-neutral-500">{question.points} điểm</span>
+            <span className="text-xs text-muted-foreground">•</span>
+            <span className="text-xs text-muted-foreground">{question.points} điểm</span>
           </div>
 
           <p className="font-medium mb-2 line-clamp-2">{question.text}</p>
@@ -271,14 +271,14 @@ function QuestionRow({
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={onEdit}
-            className="p-2 hover:bg-neutral-100 rounded-lg"
+            className="p-2 hover:bg-muted rounded-lg"
             aria-label="Edit"
           >
             <Edit2 className="w-4 h-4" />
           </button>
           <button
             onClick={onDelete}
-            className="p-2 hover:bg-red-50 text-neutral-400 hover:text-red-500 rounded-lg"
+            className="p-2 hover:bg-red-50 dark:bg-red-950/30 text-muted-foreground hover:text-red-500 rounded-lg"
             aria-label="Delete"
           >
             <Trash2 className="w-4 h-4" />
@@ -311,7 +311,7 @@ function SettingsPanel({
   });
 
   return (
-    <div className="bg-white rounded-2xl p-6 border-2 border-yellow-400 mb-6">
+    <div className="bg-card rounded-2xl p-6 border-2 border-yellow-400 mb-6">
       <h3 className="font-bold mb-4">Cài đặt quiz</h3>
 
       <div className="space-y-4">
@@ -329,7 +329,7 @@ function SettingsPanel({
             value={data.description}
             onChange={(e) => setData({ ...data, description: e.target.value })}
             rows={2}
-            className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl outline-none focus:border-black resize-none"
+            className="w-full px-4 py-3 border-2 border-border rounded-xl outline-none focus:border-foreground resize-none"
           />
         </div>
 
@@ -399,7 +399,7 @@ function SettingsPanel({
           </label>
         </div>
 
-        <div className="flex justify-end gap-2 pt-4 border-t border-neutral-100">
+        <div className="flex justify-end gap-2 pt-4 border-t border-border">
           <Button variant="outline" onClick={onCancel} disabled={loading}>
             Hủy
           </Button>

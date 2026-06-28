@@ -21,7 +21,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-black text-white min-h-screen flex flex-col sticky top-0">
+    <aside className="w-64 bg-primary text-primary-foreground min-h-screen flex flex-col sticky top-0">
       <div className="p-6 border-b border-neutral-800">
         <Link href="/admin" className="flex items-center gap-2">
           <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
@@ -46,7 +46,7 @@ export function AdminSidebar() {
                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-colors text-sm font-medium',
                 isActive
                   ? 'bg-yellow-400 text-black'
-                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
+                  : 'text-muted-foreground hover:text-white hover:bg-neutral-900'
               )}
             >
               <Icon className="w-5 h-5" />
@@ -59,7 +59,7 @@ export function AdminSidebar() {
       <div className="p-4 border-t border-neutral-800">
         <Link
           href="/"
-          className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-400 hover:text-white"
+          className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-white"
         >
           <ChevronLeft className="w-4 h-4" />
           Về trang chủ

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { requireUser } from '@/lib/auth-helpers';
+import { requireApiUser , authErrorResponse } from '@/lib/auth-helpers';
 import { generatePlaybackToken as createPlaybackToken } from '@/lib/mux';
 
 interface Params {
@@ -70,7 +70,7 @@ export async function GET(_: Request, { params }: Params) {
     }
 
     // 2/3. Cần login - check enrollment hoặc ownership
-    const user = await requireUser();
+    const user = await requireApiUser();
     const courseId = lesson.section.course.id;
 
     const isOwner =
@@ -109,7 +109,8 @@ export async function GET(_: Request, { params }: Params) {
       });
     }
   } catch (err: any) {
-    if (err.message?.includes('redirect')) throw err;
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

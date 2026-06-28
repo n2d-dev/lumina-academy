@@ -82,11 +82,11 @@ export default function CheckoutPage() {
   if (!mounted || status === 'loading') return null;
 
   return (
-    <div className="bg-neutral-50 min-h-screen">
+    <div className="bg-muted/40 min-h-screen">
       <div className="max-w-[1400px] mx-auto px-6 py-12">
         <Link
           href="/cart"
-          className="flex items-center gap-2 text-sm text-neutral-600 hover:text-black mb-6"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6"
         >
           <ChevronLeft className="w-4 h-4" />
           Quay lại giỏ hàng
@@ -96,19 +96,19 @@ export default function CheckoutPage() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-2xl p-6">
+            <div className="bg-card rounded-2xl p-6">
               <h3 className="font-bold mb-4">Thông tin liên hệ</h3>
               <div className="space-y-2">
-                <p className="text-sm text-neutral-600">
-                  Họ tên: <strong className="text-black">{session?.user?.name}</strong>
+                <p className="text-sm text-muted-foreground">
+                  Họ tên: <strong className="text-foreground">{session?.user?.name}</strong>
                 </p>
-                <p className="text-sm text-neutral-600">
-                  Email: <strong className="text-black">{session?.user?.email}</strong>
+                <p className="text-sm text-muted-foreground">
+                  Email: <strong className="text-foreground">{session?.user?.email}</strong>
                 </p>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6">
+            <div className="bg-card rounded-2xl p-6">
               <h3 className="font-bold mb-4">Phương thức thanh toán</h3>
               <div className="space-y-3">
                 {PAYMENT_METHODS.map((method) => (
@@ -124,10 +124,10 @@ export default function CheckoutPage() {
           </div>
 
           <div>
-            <div className="bg-white rounded-2xl p-6 sticky top-24">
+            <div className="bg-card rounded-2xl p-6 sticky top-24">
               <h3 className="font-bold mb-4">Đơn hàng</h3>
 
-              <div className="space-y-3 mb-4 pb-4 border-b border-neutral-100 max-h-64 overflow-auto">
+              <div className="space-y-3 mb-4 pb-4 border-b border-border max-h-64 overflow-auto">
                 {items.map((course) => (
                   <div key={course.id} className="flex gap-3">
                     <div
@@ -136,19 +136,19 @@ export default function CheckoutPage() {
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-bold line-clamp-2">{course.title}</p>
-                      <p className="text-xs text-neutral-500 mt-1">{formatPrice(course.price)}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{formatPrice(course.price)}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="space-y-2 mb-4 pb-4 border-b border-neutral-100">
+              <div className="space-y-2 mb-4 pb-4 border-b border-border">
                 <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Tạm tính</span>
+                  <span className="text-muted-foreground">Tạm tính</span>
                   <span>{formatPrice(originalTotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Giảm giá</span>
+                  <span className="text-muted-foreground">Giảm giá</span>
                   <span className="text-green-600 font-bold">
                     -{formatPrice(originalTotal - total)}
                   </span>
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
                 {loading ? 'Đang xử lý...' : `Thanh toán • ${formatPrice(total)}`}
               </Button>
 
-              <p className="text-xs text-center text-neutral-500 mt-3">
+              <p className="text-xs text-center text-muted-foreground mt-3">
                 🔒 Thanh toán an toàn được mã hóa SSL
               </p>
             </div>
@@ -188,8 +188,8 @@ function PaymentMethod({
     <label
       className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-colors ${
         selected
-          ? 'border-black bg-neutral-50'
-          : 'border-neutral-200 hover:border-neutral-400'
+          ? 'border-foreground bg-muted/40'
+          : 'border-border hover:border-neutral-400'
       }`}
     >
       <input
@@ -202,7 +202,7 @@ function PaymentMethod({
       <span className="text-2xl">{method.icon}</span>
       <span className="flex-1">
         <span className="font-medium block">{method.name}</span>
-        <span className="text-xs text-neutral-500">{method.description}</span>
+        <span className="text-xs text-muted-foreground">{method.description}</span>
       </span>
     </label>
   );

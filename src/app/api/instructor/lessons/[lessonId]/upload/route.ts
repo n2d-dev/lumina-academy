@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { requireInstructor } from '@/lib/auth-helpers';
+import { requireApiInstructor , authErrorResponse } from '@/lib/auth-helpers';
 import { createDirectUpload } from '@/lib/mux';
 
 interface Params {
@@ -26,7 +26,7 @@ interface Params {
  */
 export async function POST(_: Request, { params }: Params) {
   try {
-    const user = await requireInstructor();
+    const user = await requireApiInstructor();
 
     // Verify ownership
     const lesson = await prisma.lesson.findUnique({
@@ -42,6 +42,17 @@ export async function POST(_: Request, { params }: Params) {
 
     if (user.role !== 'ADMIN' && lesson.section.course.instructorId !== user.id) {
       return NextResponse.json({ message: 'Không có quyền' }, { status: 403 });
+    }
+
+    // Nếu lesson đã có asset cũ → xóa trên Mux trước khi replace,
+    // tránh orphan asset (tốn storage + playbackId cũ vẫn xem được).
+    if (lesson.muxAssetId) {
+      try {
+        const { deleteAsset } = await import('@/lib/mux');
+        await deleteAsset(lesson.muxAssetId);
+      } catch (e: any) {
+        console.warn('Không xóa được Mux asset cũ:', e?.message ?? e);
+      }
     }
 
     // Tạo upload URL trên Mux
@@ -65,6 +76,8 @@ export async function POST(_: Request, { params }: Params) {
 
     return NextResponse.json({ uploadUrl, uploadId });
   } catch (err: any) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     console.error('Mux upload create error:', err);
     return NextResponse.json(
       { message: err.message ?? 'Không thể tạo upload URL' },
@@ -80,7 +93,7 @@ export async function POST(_: Request, { params }: Params) {
  */
 export async function DELETE(_: Request, { params }: Params) {
   try {
-    const user = await requireInstructor();
+    const user = await requireApiInstructor();
 
     const lesson = await prisma.lesson.findUnique({
       where: { id: params.lessonId },
@@ -119,6 +132,8 @@ export async function DELETE(_: Request, { params }: Params) {
 
     return NextResponse.json({ success: true });
   } catch (err: any) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

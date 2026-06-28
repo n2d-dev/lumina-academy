@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { requireUser } from '@/lib/auth-helpers';
+import { requireApiUser , authErrorResponse } from '@/lib/auth-helpers';
 
 interface Params {
   params: { quizId: string };
@@ -12,7 +12,7 @@ interface Params {
  */
 export async function GET(_: Request, { params }: Params) {
   try {
-    const user = await requireUser();
+    const user = await requireApiUser();
 
     const attempts = await prisma.quizAttempt.findMany({
       where: {
@@ -42,6 +42,8 @@ export async function GET(_: Request, { params }: Params) {
       totalAttempts: attempts.length,
     });
   } catch (err: any) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

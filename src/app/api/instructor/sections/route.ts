@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireCourseOwner, requireInstructor } from '@/lib/auth-helpers';
+import { requireApiCourseOwner, authErrorResponse } from '@/lib/auth-helpers';
 import {
   createSectionSchema,
   reorderSectionsSchema,
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const data = createSectionSchema.parse(body);
 
-    await requireCourseOwner(data.courseId);
+    await requireApiCourseOwner(data.courseId);
 
     // Auto-set order = max + 1
     const lastSection = await prisma.section.findFirst({
@@ -46,17 +46,18 @@ export async function POST(request: Request) {
  */
 export async function PATCH(request: Request) {
   try {
-    await requireInstructor();
     const body = await request.json();
     const { courseId, sectionIds } = reorderSectionsSchema.parse(body);
 
-    await requireCourseOwner(courseId);
+    await requireApiCourseOwner(courseId);
 
-    // Update order trong transaction để consistency
+    // Update order trong transaction để consistency.
+    // updateMany + ràng buộc courseId → chỉ cập nhật section THUỘC course này,
+    // chống IDOR (ID lạ bị bỏ qua thay vì ghi đè dữ liệu instructor khác).
     await prisma.$transaction(
       sectionIds.map((id, index) =>
-        prisma.section.update({
-          where: { id },
+        prisma.section.updateMany({
+          where: { id, courseId },
           data: { order: index + 1 },
         })
       )
@@ -69,6 +70,8 @@ export async function PATCH(request: Request) {
 }
 
 function handleError(err: any) {
+  const authRes = authErrorResponse(err);
+  if (authRes) return authRes;
   if (err instanceof z.ZodError) {
     return NextResponse.json({ message: err.errors[0].message }, { status: 400 });
   }

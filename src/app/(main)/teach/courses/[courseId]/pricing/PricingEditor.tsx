@@ -49,13 +49,13 @@ export function PricingEditor({ course }: { course: Course }) {
     <div className="max-w-3xl mx-auto p-8 lg:p-12">
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-black mb-2 font-display">Định giá khóa học</h1>
-        <p className="text-neutral-600">
+        <p className="text-muted-foreground">
           Chọn mức giá phù hợp. Lumina giữ 30% phí nền tảng, bạn nhận 70% mỗi lần bán.
         </p>
       </div>
 
       {/* Price tiers */}
-      <div className="bg-white rounded-2xl p-6 border border-neutral-100 mb-6">
+      <div className="bg-card rounded-2xl p-6 border border-border mb-6">
         <h3 className="font-bold mb-4">Chọn mức giá</h3>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {PRICE_TIERS.map((tier) => (
@@ -67,24 +67,24 @@ export function PricingEditor({ course }: { course: Course }) {
               }}
               className={`p-4 border-2 rounded-xl text-left transition-all ${
                 !customMode && price === tier.value
-                  ? 'border-black bg-neutral-50'
-                  : 'border-neutral-200 hover:border-neutral-400'
+                  ? 'border-foreground bg-muted/40'
+                  : 'border-border hover:border-neutral-400'
               }`}
             >
               <p className="font-black text-lg font-display">{tier.label}</p>
-              <p className="text-xs text-neutral-600 mt-1">{tier.desc}</p>
+              <p className="text-xs text-muted-foreground mt-1">{tier.desc}</p>
             </button>
           ))}
           <button
             onClick={() => setCustomMode(true)}
             className={`p-4 border-2 border-dashed rounded-xl text-center ${
               customMode
-                ? 'border-black bg-neutral-50'
-                : 'border-neutral-300 hover:border-black'
+                ? 'border-foreground bg-muted/40'
+                : 'border-border hover:border-foreground'
             }`}
           >
             <p className="font-bold">Tùy chỉnh</p>
-            <p className="text-xs text-neutral-600 mt-1">Nhập giá khác</p>
+            <p className="text-xs text-muted-foreground mt-1">Nhập giá khác</p>
           </button>
         </div>
 
@@ -104,9 +104,9 @@ export function PricingEditor({ course }: { course: Course }) {
       </div>
 
       {/* Original price (for discount) */}
-      <div className="bg-white rounded-2xl p-6 border border-neutral-100 mb-6">
+      <div className="bg-card rounded-2xl p-6 border border-border mb-6">
         <h3 className="font-bold mb-1">Giá gốc (tùy chọn)</h3>
-        <p className="text-sm text-neutral-600 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Hiển thị giá gốc bị gạch ngang để show ưu đãi. Để trống nếu không dùng.
         </p>
         <Input
@@ -133,7 +133,7 @@ export function PricingEditor({ course }: { course: Course }) {
           </span>
           {originalPrice && originalPrice > price && (
             <>
-              <span className="text-neutral-400 line-through">
+              <span className="text-muted-foreground line-through">
                 {formatPrice(originalPrice)}
               </span>
               <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">
@@ -143,7 +143,7 @@ export function PricingEditor({ course }: { course: Course }) {
           )}
         </div>
         {price > 0 && (
-          <p className="text-sm text-neutral-700 mt-3">
+          <p className="text-sm text-muted-foreground mt-3">
             💰 Thu nhập của bạn: <strong>{formatPrice(Math.round(price * 0.7))}</strong> mỗi đơn (sau phí 30%)
           </p>
         )}

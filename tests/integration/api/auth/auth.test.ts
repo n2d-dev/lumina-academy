@@ -15,7 +15,7 @@ import {
   cleanDatabase,
   disconnectTestDb,
   createTestUser,
-} from '../../helpers/db';
+} from '../../../helpers/db';
 
 // Mock email
 vi.mock('@/lib/email', () => ({

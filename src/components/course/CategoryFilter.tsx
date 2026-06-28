@@ -19,11 +19,12 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
           <button
             key={cat.slug}
             onClick={() => onSelect(cat.slug)}
+            aria-pressed={isActive}
             className={cn(
-              'flex items-center gap-2 px-4 py-2.5 rounded-full font-medium text-sm whitespace-nowrap transition-all touch-manipulation',
+              'flex items-center gap-2 px-4 py-2.5 rounded-full text-sm whitespace-nowrap transition-all touch-manipulation',
               isActive
-                ? 'bg-black text-white'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
+                ? 'bg-primary text-primary-foreground font-semibold shadow-soft'
+                : 'bg-muted hover:bg-border text-muted-foreground font-medium'
             )}
           >
             <Icon className="w-4 h-4" />

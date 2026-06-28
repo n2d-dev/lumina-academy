@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { MOCK_COURSES } from '@/data/courses';
 import { CourseGrid } from '@/components/course/CourseGrid';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 /**
  * Wishlist page
@@ -21,22 +21,17 @@ export default function WishlistPage() {
   if (!mounted) return null;
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-12">
         <h1 className="text-3xl sm:text-4xl font-black mb-6 sm:mb-8 font-display">Danh sách yêu thích</h1>
 
         {wishlistCourses.length === 0 ? (
-          <div className="text-center py-20">
-            <Heart className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2">Chưa có khóa học yêu thích</h2>
-            <p className="text-neutral-600 mb-6">Thêm khóa học vào danh sách để xem sau</p>
-            <Link
-              href="/courses"
-              className="inline-block px-6 py-3 bg-black text-white font-bold rounded-full"
-            >
-              Khám phá ngay
-            </Link>
-          </div>
+          <EmptyState
+            icon={Heart}
+            title="Chưa có khóa học yêu thích"
+            description="Thêm khóa học vào danh sách để xem lại sau này."
+            action={{ label: 'Khám phá ngay', href: '/courses' }}
+          />
         ) : (
           <CourseGrid courses={wishlistCourses} />
         )}

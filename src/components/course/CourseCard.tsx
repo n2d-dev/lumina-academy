@@ -27,24 +27,32 @@ export function CourseCard({ course }: CourseCardProps) {
   };
 
   return (
-    <Link href={`/courses/${course.slug}`} className="group block">
+    <Link
+      href={`/courses/${course.slug}`}
+      className="group block transition-transform duration-300 hover:-translate-y-1"
+    >
       {/* Thumbnail */}
-      <div
-        className="relative overflow-hidden rounded-xl sm:rounded-2xl mb-2 sm:mb-4 aspect-[16/10]"
-        style={{ background: GRADIENTS[course.thumbnail ?? 'gradient-blue'] }}
-      >
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all" />
-
-        <div className="absolute inset-0 opacity-30">
-          <svg width="100%" height="100%">
-            <defs>
-              <pattern id={`p-${course.id}`} width="40" height="40" patternUnits="userSpaceOnUse">
-                <circle cx="20" cy="20" r="1" fill="white" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill={`url(#p-${course.id})`} />
-          </svg>
+      <div className="relative overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-4 aspect-[16/10] shadow-soft group-hover:shadow-elevated transition-shadow duration-300">
+        {/* Lớp nền gradient — zoom nhẹ khi hover tạo cảm giác premium */}
+        <div
+          className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+          style={{ background: GRADIENTS[course.thumbnail ?? 'gradient-blue'] }}
+        >
+          {/* Hoa văn chấm bi mờ */}
+          <div className="absolute inset-0 opacity-30">
+            <svg width="100%" height="100%">
+              <defs>
+                <pattern id={`p-${course.id}`} width="40" height="40" patternUnits="userSpaceOnUse">
+                  <circle cx="20" cy="20" r="1" fill="white" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill={`url(#p-${course.id})`} />
+            </svg>
+          </div>
         </div>
+
+        {/* Scrim dưới đáy cho chiều sâu + nhạt dần khi hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/5 group-hover:from-black/10 transition-colors duration-300" />
 
         {course.isBestseller && (
           <div className="absolute top-2 sm:top-4 left-2 sm:left-4">
@@ -54,41 +62,45 @@ export function CourseCard({ course }: CourseCardProps) {
 
         <button
           onClick={handleWishlistClick}
-          aria-label="Toggle wishlist"
-          className="absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-11 sm:h-11 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform touch-manipulation"
+          aria-label={isInWishlist ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích'}
+          aria-pressed={isInWishlist}
+          className="absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-11 sm:h-11 bg-card/90 backdrop-blur rounded-full flex items-center justify-center shadow-soft hover:scale-110 active:scale-95 transition-transform touch-manipulation"
         >
           <Heart
-            className={`w-3 h-3 sm:w-4 sm:h-4 ${
-              isInWishlist ? 'fill-red-500 text-red-500' : 'text-neutral-700'
-            }`}
+            className={
+              isInWishlist
+                ? 'w-3 h-3 sm:w-4 sm:h-4 fill-red-500 text-red-500'
+                : 'w-3 h-3 sm:w-4 sm:h-4 text-foreground/70'
+            }
             strokeWidth={2.5}
           />
         </button>
 
-        <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 w-8 h-8 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+        {/* Nút play — hiện rõ dần & scale khi hover */}
+        <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 w-8 h-8 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center shadow-lg opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
           <Play className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-black ml-0.5" fill="currentColor" />
         </div>
       </div>
 
       {/* Content */}
       <div>
-        <h3 className="font-bold text-xs sm:text-base leading-tight mb-1 sm:mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
+        <h3 className="font-bold text-xs sm:text-base leading-tight mb-1 sm:mb-2 line-clamp-2 transition-colors group-hover:text-amber-700 dark:group-hover:text-amber-400">
           {course.title}
         </h3>
 
-        <p className="text-xs text-neutral-600 mb-1 sm:mb-2 truncate">{course.instructor.name}</p>
+        <p className="text-xs text-muted-foreground mb-1 sm:mb-2 truncate">{course.instructor.name}</p>
 
         <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-3">
-          <span className="font-bold text-amber-600 text-xs">
+          <span className="font-bold text-amber-600 dark:text-amber-500 text-xs tabular-nums">
             {course.averageRating.toFixed(1)}
           </span>
           <StarRating rating={course.averageRating} size="sm" />
-          <span className="text-xs text-neutral-500 hidden sm:inline">
+          <span className="text-xs text-muted-foreground hidden sm:inline tabular-nums">
             ({formatNumber(course.totalReviews)})
           </span>
         </div>
 
-        <div className="hidden sm:flex items-center gap-3 text-xs text-neutral-600 mb-3">
+        <div className="hidden sm:flex items-center gap-3 text-xs text-muted-foreground mb-3">
           <span className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
             {formatDuration(course.totalDuration)}
@@ -100,9 +112,9 @@ export function CourseCard({ course }: CourseCardProps) {
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-          <span className="text-sm sm:text-lg font-black">{formatPrice(course.price)}</span>
+          <span className="text-sm sm:text-lg font-black tabular-nums">{formatPrice(course.price)}</span>
           {course.originalPrice && course.originalPrice > course.price && (
-            <span className="text-xs text-neutral-400 line-through">
+            <span className="text-xs text-muted-foreground line-through tabular-nums">
               {formatPrice(course.originalPrice)}
             </span>
           )}

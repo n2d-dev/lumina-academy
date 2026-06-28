@@ -4,6 +4,7 @@ import { z } from 'zod';
 import crypto from 'crypto';
 import { prisma } from '@/lib/db';
 import { sendPasswordResetEmail } from '@/lib/email';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 const forgotSchema = z.object({
   email: z.string().email('Email không hợp lệ'),
@@ -25,8 +26,13 @@ const TOKEN_TTL_MINUTES = 30;
  */
 export async function POST(request: Request) {
   try {
+    // Chống lạm dụng gửi email reset: tối đa 3 lần / phút / IP.
+    const limited = checkRateLimit(request, 'forgot-password', { limit: 3, windowMs: 60_000 });
+    if (limited.response) return limited.response;
+
     const body = await request.json();
-    const { email } = forgotSchema.parse(body);
+    const parsed = forgotSchema.parse(body);
+    const email = parsed.email.toLowerCase();
 
     const headersList = headers();
     const ipAddress =

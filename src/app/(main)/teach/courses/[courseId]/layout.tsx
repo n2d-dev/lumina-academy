@@ -43,7 +43,7 @@ export default async function CourseEditorLayout({ children, params }: Props) {
   }
 
   return (
-    <div className="flex min-h-screen bg-neutral-50">
+    <div className="flex min-h-screen bg-muted/40">
       <CourseBuilderNav courseId={params.courseId} completedSteps={completedSteps} />
       <main className="flex-1 overflow-x-hidden">{children}</main>
     </div>

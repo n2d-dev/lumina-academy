@@ -1,4 +1,8 @@
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { CourseGrid } from '@/components/course/CourseGrid';
+import { Section, SectionHeading } from '@/components/ui/Section';
+import { Container } from '@/components/ui/Container';
 import type { Course } from '@/types';
 
 interface FeaturedCoursesProps {
@@ -7,17 +11,24 @@ interface FeaturedCoursesProps {
 
 export function FeaturedCourses({ courses }: FeaturedCoursesProps) {
   return (
-    <section className="py-12 sm:py-20 bg-neutral-50">
-      <div className="max-w-[1400px] mx-auto px-6">
-        <div className="mb-6 sm:mb-12">
-          <p className="text-sm font-bold text-yellow-600 mb-2 tracking-wider">XU HƯỚNG</p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-display">
-            Khóa học nổi bật
-          </h2>
-        </div>
-
+    <Section className="bg-muted/40 border-y border-border">
+      <Container>
+        <SectionHeading
+          eyebrow="Xu hướng"
+          title="Khóa học nổi bật"
+          subtitle="Những khóa học được học viên yêu thích và đánh giá cao nhất tuần này."
+          action={
+            <Link
+              href="/courses"
+              className="hidden md:inline-flex items-center gap-2 text-sm font-bold hover:gap-3 transition-all"
+            >
+              Xem tất cả
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          }
+        />
         <CourseGrid courses={courses} />
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }

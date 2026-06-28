@@ -20,9 +20,9 @@ function ResetPasswordContent() {
 
   if (!token) {
     return (
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center">
+      <div className="bg-card rounded-2xl p-8 max-w-md w-full text-center">
         <h1 className="text-2xl font-black mb-3 font-display">Link không hợp lệ</h1>
-        <p className="text-neutral-600 mb-6">
+        <p className="text-muted-foreground mb-6">
           Link đặt lại mật khẩu không có hoặc không đầy đủ. Vui lòng yêu cầu link mới.
         </p>
         <Link href="/forgot-password">
@@ -62,12 +62,12 @@ function ResetPasswordContent() {
 
   if (success) {
     return (
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <div className="bg-card rounded-2xl p-8 max-w-md w-full text-center">
+        <div className="w-16 h-16 bg-green-100 dark:bg-green-950/40 rounded-full flex items-center justify-center mx-auto mb-6">
           <CheckCircle2 className="w-8 h-8 text-green-600" />
         </div>
         <h1 className="text-2xl font-black mb-3 font-display">Đặt lại thành công!</h1>
-        <p className="text-neutral-600 mb-6">
+        <p className="text-muted-foreground mb-6">
           Mật khẩu của bạn đã được đặt lại. Đang chuyển đến trang đăng nhập...
         </p>
       </div>
@@ -75,9 +75,9 @@ function ResetPasswordContent() {
   }
 
   return (
-    <div className="bg-white rounded-2xl p-8 max-w-md w-full">
+    <div className="bg-card rounded-2xl p-8 max-w-md w-full">
       <h1 className="text-2xl sm:text-3xl font-black mb-2 font-display">Đặt mật khẩu mới</h1>
-      <p className="text-neutral-600 mb-6">
+      <p className="text-muted-foreground mb-6">
         Nhập mật khẩu mới cho tài khoản của bạn. Mật khẩu phải có ít nhất 6 ký tự.
       </p>
 
@@ -109,7 +109,7 @@ function ResetPasswordContent() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4 sm:px-6">
+    <div className="min-h-screen bg-muted/40 flex items-center justify-center px-4 sm:px-6">
       <Suspense fallback={null}>
         <ResetPasswordContent />
       </Suspense>

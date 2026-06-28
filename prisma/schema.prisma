@@ -70,6 +70,7 @@ model User {
   email         String    @unique
   name          String?
   password      String?
+  passwordChangedAt DateTime?
   image         String?
   role          UserRole  @default(STUDENT)
   emailVerified DateTime?

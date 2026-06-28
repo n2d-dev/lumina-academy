@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { requireInstructor } from '@/lib/auth-helpers';
+import { requireApiInstructor , authErrorResponse } from '@/lib/auth-helpers';
 import { createCourseSchema } from '@/lib/validations/course';
 import { slugify } from '@/lib/utils';
 
@@ -11,7 +11,7 @@ import { slugify } from '@/lib/utils';
  */
 export async function GET() {
   try {
-    const user = await requireInstructor();
+    const user = await requireApiInstructor();
 
     const courses = await prisma.course.findMany({
       where: user.role === 'ADMIN' ? {} : { instructorId: user.id },
@@ -24,6 +24,8 @@ export async function GET() {
 
     return NextResponse.json({ courses });
   } catch (err: any) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }
@@ -34,7 +36,7 @@ export async function GET() {
  */
 export async function POST(request: Request) {
   try {
-    const user = await requireInstructor();
+    const user = await requireApiInstructor();
     const body = await request.json();
     const data = createCourseSchema.parse(body);
 
@@ -71,6 +73,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ course }, { status: 201 });
   } catch (err: any) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     if (err instanceof z.ZodError) {
       return NextResponse.json(
         { message: err.errors[0].message, errors: err.errors },

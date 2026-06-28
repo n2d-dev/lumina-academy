@@ -45,13 +45,18 @@ export function CourseDetailView({ course }: Props) {
   };
 
   return (
-    <div className="bg-card min-h-screen">
-      {/* Hero */}
-      <div className="bg-primary text-primary-foreground">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-12">
+    <div className="bg-background min-h-screen">
+      {/* Hero — banner tối cố định (KHÔNG dùng bg-primary vì token này đảo
+          màu theo theme → ở dark mode sẽ thành nền trắng). Thêm quầng amber. */}
+      <div className="relative overflow-hidden bg-neutral-950 text-white">
+        <div
+          className="pointer-events-none absolute -top-32 right-[-5%] h-[420px] w-[420px] rounded-full blur-3xl"
+          style={{ background: 'radial-gradient(circle, hsl(var(--accent) / 0.18), transparent 70%)' }}
+        />
+        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-12">
           <Link
             href="/courses"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-white mb-6"
+            className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors mb-6"
           >
             <ChevronLeft className="w-4 h-4" />
             Quay lại danh sách
@@ -69,22 +74,22 @@ export function CourseDetailView({ course }: Props) {
                 {course.title}
               </h1>
 
-              <p className="text-lg text-neutral-300 mb-6 leading-relaxed">
+              <p className="text-lg text-white/70 mb-6 leading-relaxed">
                 {course.description}
               </p>
 
               <div className="flex flex-wrap items-center gap-4 mb-6 text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-amber-400">{course.averageRating.toFixed(1)}</span>
+                  <span className="font-bold text-amber-400 tabular-nums">{course.averageRating.toFixed(1)}</span>
                   <StarRating rating={course.averageRating} />
-                  <span className="text-muted-foreground">
+                  <span className="text-white/60 tabular-nums">
                     ({formatNumber(course.totalReviews)} đánh giá)
                   </span>
                 </div>
-                <span className="text-muted-foreground">•</span>
-                <span className="flex items-center gap-1.5 text-neutral-300">
+                <span className="text-white/40">•</span>
+                <span className="flex items-center gap-1.5 text-white/70">
                   <Users className="w-4 h-4" />
-                  {formatNumber(course.totalStudents)} học viên
+                  <span className="tabular-nums">{formatNumber(course.totalStudents)}</span> học viên
                 </span>
               </div>
 
@@ -93,11 +98,11 @@ export function CourseDetailView({ course }: Props) {
                   {course.instructor.name[0]}
                 </div>
                 <div>
-                  <p className="text-sm">
+                  <p className="text-sm text-white/80">
                     Giảng dạy bởi{' '}
-                    <strong className="text-yellow-400">{course.instructor.name}</strong>
+                    <strong className="text-amber-400">{course.instructor.name}</strong>
                   </p>
-                  <p className="text-xs text-muted-foreground">{course.instructor.title}</p>
+                  <p className="text-xs text-white/50">{course.instructor.title}</p>
                 </div>
               </div>
             </div>
@@ -118,9 +123,9 @@ export function CourseDetailView({ course }: Props) {
 
                 <div className="p-6">
                   <div className="flex items-baseline gap-3 mb-2">
-                    <span className="text-3xl font-black">{formatPrice(course.price)}</span>
+                    <span className="text-3xl font-black tabular-nums">{formatPrice(course.price)}</span>
                     {course.originalPrice && (
-                      <span className="text-muted-foreground line-through">
+                      <span className="text-muted-foreground line-through tabular-nums">
                         {formatPrice(course.originalPrice)}
                       </span>
                     )}
@@ -141,7 +146,7 @@ export function CourseDetailView({ course }: Props) {
 
                   <button
                     onClick={handleBuyNow}
-                    className="w-full py-4 bg-yellow-400 text-black font-bold rounded-full hover:bg-yellow-500 active:scale-95 transition-all mb-3 touch-manipulation"
+                    className="w-full py-4 bg-accent text-accent-foreground font-bold rounded-full hover:brightness-95 active:scale-95 transition-all mb-3 touch-manipulation"
                   >
                     Mua ngay
                   </button>
@@ -171,9 +176,9 @@ export function CourseDetailView({ course }: Props) {
       >
         <div className="flex-1">
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-black">{formatPrice(course.price)}</span>
+            <span className="text-xl font-black tabular-nums">{formatPrice(course.price)}</span>
             {course.originalPrice && (
-              <span className="text-xs text-muted-foreground line-through">
+              <span className="text-xs text-muted-foreground line-through tabular-nums">
                 {formatPrice(course.originalPrice)}
               </span>
             )}

@@ -1,9 +1,29 @@
 import type { Metadata, Viewport } from 'next';
+import { Fraunces, Plus_Jakarta_Sans } from 'next/font/google';
 import { Providers } from './providers';
 import { Analytics } from '@/components/analytics/Analytics';
 import { themeInitScript } from '@/components/theme/ThemeProvider';
 import { SITE_CONFIG } from '@/lib/constants';
 import './globals.css';
+
+/**
+ * Self-host font qua next/font: loại bỏ FOUT/nhảy layout, không request
+ * Google ngoài (nhanh hơn + bớt rủi ro CSP). Bao gồm subset 'vietnamese'
+ * để hiển thị đúng dấu tiếng Việt. Phơi ra CSS variable cho Tailwind.
+ */
+const fraunces = Fraunces({
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-jakarta',
+});
 
 export const metadata: Metadata = {
   // Base để Next resolve mọi URL tương đối (OG image, canonical) thành tuyệt đối.
@@ -52,14 +72,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi" suppressHydrationWarning>
+    <html lang="vi" className={`${fraunces.variable} ${jakarta.variable}`} suppressHydrationWarning>
       <head>
         {/* Set dark class trước paint để tránh nhấp nháy theme */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         {/* PWA icons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.svg" />
         <link rel="icon" type="image/svg+xml" href="/icons/favicon-32x32.svg" />

@@ -1,3 +1,6 @@
+'use client';
+
+import { useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Flame, Play, Star, Trophy, CheckCircle2, Users } from 'lucide-react';
 import { GRADIENTS } from '@/lib/constants';
@@ -11,10 +14,37 @@ const STATS = [
 ];
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  /**
+   * "Ánh sáng tri thức" — quầng amber mềm bám theo con trỏ.
+   * Cập nhật CSS variable trực tiếp trên DOM (không setState mỗi frame) → mượt,
+   * không re-render, không toDataURL. Tinh tế trên nền sáng, đúng tinh thần Lumina.
+   */
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty('--gx', `${e.clientX - rect.left}px`);
+    el.style.setProperty('--gy', `${e.clientY - rect.top}px`);
+  };
+
   return (
-    <section className="relative overflow-hidden">
+    <section
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      className="relative overflow-hidden"
+    >
       {/* Nền + signature "ánh sáng Lumina" */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-accent/[0.07] via-background to-background" />
+      {/* Quầng sáng bám con trỏ (mặc định ở 70%/30% khi chưa rê chuột) */}
+      <div
+        className="absolute inset-0 -z-10 transition-opacity duration-300"
+        style={{
+          background:
+            'radial-gradient(420px circle at var(--gx, 70%) var(--gy, 30%), hsl(var(--accent) / 0.18), transparent 70%)',
+        }}
+      />
       <div className="absolute -top-40 right-[-10%] -z-10 h-[520px] w-[520px] glow-amber rounded-full blur-2xl" />
       <div className="absolute inset-0 -z-10 opacity-[0.4] text-foreground [mask-image:radial-gradient(70%_60%_at_50%_30%,black,transparent)]">
         <svg width="100%" height="100%">
@@ -28,7 +58,7 @@ export function HeroSection() {
       <Container className="py-14 sm:py-20 lg:py-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left — thesis */}
-          <div>
+          <div className="hero-anim hero-fade">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-accent text-accent-foreground rounded-full text-xs font-bold tracking-wide shadow-soft mb-7">
               <Flame className="w-3.5 h-3.5" />
               ƯU ĐÃI 50% CHO NGƯỜI MỚI
@@ -81,7 +111,7 @@ export function HeroSection() {
                 <div key={s.label} className="flex items-center gap-6 sm:gap-10">
                   {i > 0 && <span className="h-9 w-px bg-border" aria-hidden />}
                   <div>
-                    <dd className="font-display text-2xl sm:text-3xl font-black">{s.value}</dd>
+                    <dd className="font-display text-2xl sm:text-3xl font-black tabular-nums">{s.value}</dd>
                     <dt className="text-xs text-muted-foreground font-medium">{s.label}</dt>
                   </div>
                 </div>
@@ -90,7 +120,7 @@ export function HeroSection() {
           </div>
 
           {/* Right — feature showcase */}
-          <div className="relative hidden lg:block">
+          <div className="relative hidden lg:block hero-anim hero-fade" style={{ animationDelay: '0.15s' }}>
             <FeatureCard />
           </div>
         </div>
@@ -115,15 +145,15 @@ function FeatureCard() {
         </div>
         <div className="flex items-center gap-2 mb-2">
           <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-          <span className="font-bold text-sm">4.9</span>
-          <span className="text-xs text-muted-foreground">(12.847 đánh giá)</span>
+          <span className="font-bold text-sm tabular-nums">4.9</span>
+          <span className="text-xs text-muted-foreground tabular-nums">(12.847 đánh giá)</span>
         </div>
         <h3 className="font-bold text-lg mb-1">React.js Toàn Tập 2026</h3>
         <p className="text-sm text-muted-foreground mb-4">Nguyễn Minh Anh • Senior @ Google</p>
         <div className="flex items-center justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="font-display text-2xl font-black">1.290.000đ</span>
-            <span className="text-sm text-muted-foreground line-through">2.590.000đ</span>
+            <span className="font-display text-2xl font-black tabular-nums">1.290.000đ</span>
+            <span className="text-sm text-muted-foreground line-through tabular-nums">2.590.000đ</span>
           </div>
           <span className="px-2.5 py-1 bg-accent text-accent-foreground text-xs font-black rounded-lg">
             -50%
@@ -140,7 +170,7 @@ function FeatureCard() {
 
       <div className="absolute -bottom-5 right-6 z-30 bg-primary text-primary-foreground px-4 py-3 rounded-2xl shadow-elevated flex items-center gap-2">
         <CheckCircle2 className="w-4 h-4 text-green-400" />
-        <span className="text-xs font-bold">+45.230 học viên</span>
+        <span className="text-xs font-bold tabular-nums">+45.230 học viên</span>
       </div>
 
       <div className="absolute -bottom-8 -left-6 z-10 bg-card border border-border px-4 py-3 rounded-2xl shadow-soft flex items-center gap-2.5 rotate-[-4deg]">

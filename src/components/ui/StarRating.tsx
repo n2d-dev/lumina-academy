@@ -23,7 +23,7 @@ export function StarRating({ rating, size = 'sm', className }: StarRatingProps) 
             sizeMap[size],
             i <= Math.floor(rating)
               ? 'fill-amber-500 text-amber-500'
-              : 'text-neutral-300'
+              : 'text-border'
           )}
         />
       ))}

@@ -10,8 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ['Fraunces', 'serif'],
-        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        // Trỏ tới CSS variable do next/font cấp (xem src/app/layout.tsx)
+        display: ['var(--font-fraunces)', 'Georgia', 'serif'],
+        sans: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
       },
       colors: {
         brand: {

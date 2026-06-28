@@ -1,4 +1,6 @@
+import { SearchX } from 'lucide-react';
 import { CourseCard } from './CourseCard';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { Course } from '@/types';
 
 interface CourseGridProps {
@@ -9,9 +11,11 @@ interface CourseGridProps {
 export function CourseGrid({ courses, emptyMessage = 'Không có khóa học nào' }: CourseGridProps) {
   if (courses.length === 0) {
     return (
-      <div className="py-20 text-center">
-        <p className="text-muted-foreground">{emptyMessage}</p>
-      </div>
+      <EmptyState
+        icon={SearchX}
+        title={emptyMessage}
+        description="Thử đổi bộ lọc hoặc từ khóa tìm kiếm khác."
+      />
     );
   }
 
